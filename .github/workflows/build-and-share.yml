@@ -18,11 +18,17 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Compile and Pack JAR
+      - name: Compile and Pack JAR with Resources
         run: |
           mkdir -p out
+          
           find src -name "*.java" > sources.txt
           javac -d out @sources.txt
+          
+          if [ -d "resources" ]; then
+            cp -r resources/* out/
+          fi
+          
           jar cfe LuckyStarGame.jar LuckyStarGame -C out .
 
       - name: Upload Build Artifact
