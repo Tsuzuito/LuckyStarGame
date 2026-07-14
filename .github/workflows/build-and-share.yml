@@ -1,0 +1,42 @@
+name: Build LuckyStarGame
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Скачиваем ваш код из репозитория
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Устанавливаем JDK (Swing отлично работает на стандартной Java)
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    # 3. Ручная компиляция и упаковка в JAR
+    - name: Compile and Pack JAR
+      run: |
+        # Создаем временную папку для скомпилированных .class файлов
+        mkdir -p out
+        
+        # Находим все java-файлы в папке src/ и компилируем их в папку out
+        find src -name "*.java" > sources.txt
+        javac -d out @sources.txt
+        
+        # Упаковываем все скомпилированные файлы из 'out' в LuckyStarGame.jar
+        # Точка входа (Main-Class) указывает на LuckyStarGame (без пакета)
+        jar cfe LuckyStarGame.jar LuckyStarGame -C out .
+
+    # 4. Загружаем готовый JAR в артефакты
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: LuckyStarGame-build
+        path: LuckyStarGame.jar

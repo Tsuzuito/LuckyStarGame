@@ -17,7 +17,7 @@ public class SnakeLogic {
     private boolean isGameOver = false;
     public int tickCounter = 0;
 
-    public int score;
+    public int score = 0;
 
     private enum Direction { UP, DOWN, LEFT, RIGHT }
     private Direction direction = Direction.RIGHT;
@@ -61,6 +61,8 @@ public class SnakeLogic {
 
         food.resetFood(panelWidth, panelHeight, padding);
     }
+
+
 
     public void tick(){
         //debug

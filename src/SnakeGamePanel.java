@@ -15,6 +15,8 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     private final int gridSize = 16;
     private final Image bgSprite;
 
+    private final GameSaveManager saveManager;
+
     private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
     private static final String MOVE_UP = "move up";
     private static final String MOVE_DOWN = "move down";
@@ -33,8 +35,9 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     //debug
     JLabel debugLabel = new JLabel();
 
-    public SnakeGamePanel(PanelManager manager){
+    public SnakeGamePanel(PanelManager manager, GameSaveManager saveManager){
         this.manager = manager;
+        this.saveManager = saveManager;
 
         //x, y, width, height
         debugLabel.setBounds(1,1,100,10);
@@ -162,6 +165,10 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
             debugLabel.setText("tick: " + snake.tickCounter + "\n");
         } else {
             timer.stop();
+            if(saveManager.getBestScore() < snake.score){
+                saveManager.saveGame(snake.score);
+            }
+
         }
     }
 }

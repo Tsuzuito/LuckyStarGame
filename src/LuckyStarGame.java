@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class LuckyStarGame {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
 
         JFrame frame = new JFrame("LSGame");
 
