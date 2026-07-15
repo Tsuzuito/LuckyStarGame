@@ -59,10 +59,8 @@ public class SnakeLogic {
 
         tickCounter = 0;
 
-        food.resetFood(panelWidth, panelHeight, padding);
+        food.resetFood(panelWidth, panelHeight, padding, snake);
     }
-
-
 
     public void tick(){
         //debug
@@ -81,7 +79,7 @@ public class SnakeLogic {
 
         //food check
         if(newHead.x == food.getxPos() && newHead.y == food.getyPos()){
-            food.resetFood(panelWidth, panelHeight, padding);
+            food.resetFood(panelWidth, panelHeight, padding, snake);
             score++;
         } else {
             snake.remove(snake.size() - 1);

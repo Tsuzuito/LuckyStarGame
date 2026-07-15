@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class PanelManager {
+public class PanelManager{
 
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel container = new JPanel(cardLayout);

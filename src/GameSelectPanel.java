@@ -10,7 +10,7 @@ public class GameSelectPanel extends JPanel implements ActionListener {
 
     //Snake
     private final JButton konataGameButton = new JButton("Snake");
-    //
+    //space invaders
     private final JButton kagamiGameButton = new JButton("...");
     //paddle game
     private final JButton tsukasaGameButton = new JButton("...");
