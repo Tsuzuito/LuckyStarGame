@@ -1,3 +1,5 @@
+import sound.SoundManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -33,7 +35,9 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button){
+            SoundManager.playSound("/funnyclinksound.wav");
             manager.show("gameSelect");
+
         }
     }
 }

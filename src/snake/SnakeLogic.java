@@ -1,5 +1,7 @@
 package snake;
 
+import sound.SoundManager;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +82,7 @@ public class SnakeLogic {
         //food check
         if(newHead.x == food.getxPos() && newHead.y == food.getyPos()){
             food.resetFood(panelWidth, panelHeight, padding, snake);
+            SoundManager.playSound("/pop.wav");
             score++;
         } else {
             snake.remove(snake.size() - 1);
