@@ -12,6 +12,7 @@ public class PanelManager{
         container.add(new GameSelectPanel(this), "gameSelect");
         container.add(new SnakeGamePanel(this, saveManager), "gameSnake");
         container.add(new ScorePanel(this, saveManager), "scoreMenu");
+        container.add(new SpaceInvadersGamePanel(this, saveManager), "gameSpaceInvaders");
     }
 
     public JPanel getContainer() {

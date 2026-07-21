@@ -11,7 +11,7 @@ public class GameSelectPanel extends JPanel implements ActionListener {
     //Snake
     private final JButton konataGameButton = new JButton("Snake");
     //space invaders
-    private final JButton kagamiGameButton = new JButton("...");
+    private final JButton kagamiGameButton = new JButton("test");
     //paddle game
     private final JButton tsukasaGameButton = new JButton("...");
     //Memory
@@ -61,7 +61,6 @@ public class GameSelectPanel extends JPanel implements ActionListener {
         scoreMenu.addActionListener(this);
 
         //temp
-        kagamiGameButton.setEnabled(false);
         tsukasaGameButton.setEnabled(false);
         miyukiGameButton.setEnabled(false);
 
@@ -87,6 +86,9 @@ public class GameSelectPanel extends JPanel implements ActionListener {
         //-------------------------
         if(e.getSource() == konataGameButton){
             manager.show("gameSnake");
+        }
+        if(e.getSource() == kagamiGameButton){
+            manager.show("gameSpaceInvaders");
         }
     }
 }

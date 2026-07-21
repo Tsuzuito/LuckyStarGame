@@ -27,7 +27,6 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     private final ImageIcon foodSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
 
     private final JButton backButton = new JButton("Back");
-
     private final JLabel scoreLabel = new JLabel();
 
     SnakeLogic snake = new SnakeLogic();
@@ -107,13 +106,13 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
             @Override
             public void componentShown(java.awt.event.ComponentEvent e){
                 snake.updateDimensions(getWidth(), getHeight());
-                snake.reset();
                 timer.start();
           }
 
           @Override
             public void componentHidden(java.awt.event.ComponentEvent e){
                 timer.stop();
+              snake.reset();
           }
         });
     }
@@ -168,7 +167,6 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
             if(saveManager.getBestScore() < snake.score){
                 saveManager.saveGame(snake.score);
             }
-
         }
     }
 }
