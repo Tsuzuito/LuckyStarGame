@@ -12,6 +12,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     private static final String MOVE_RIGHT = "move right";
     private static final String STOP_RIGHT= "stop right";
     private static final String STOP_LEFT= "stop left";
+    private static final String SHOOT_FIRE= "stoop left";
 
     private final PanelManager manager;
     private final GameSaveManager saveManager;
@@ -21,6 +22,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     private Timer timer;
 
     private final ImageIcon shipSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
+    private final ImageIcon laserSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
 
     private JButton exitButton = new JButton("Exit");
 
@@ -78,15 +80,26 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
             }
         };
 
+        Action userInputShootFire = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logic.shootFire();
+            }
+        };
+
         getInputMap(IFW).put(KeyStroke.getKeyStroke("D"), MOVE_RIGHT);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("A"), MOVE_LEFT);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("released D"), STOP_RIGHT);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("released A"), STOP_LEFT);
 
+        getInputMap(IFW).put(KeyStroke.getKeyStroke("SPACE"), SHOOT_FIRE);
+
         getActionMap().put(MOVE_RIGHT, userInputRIGHT);
         getActionMap().put(MOVE_LEFT, userInputLEFT);
         getActionMap().put(STOP_RIGHT, userInputReleaseRIGHT);
         getActionMap().put(STOP_LEFT, userInputReleaseLEFT);
+
+        getActionMap().put(SHOOT_FIRE, userInputShootFire);
 
 
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
@@ -111,6 +124,12 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         if (shipSprite != null) {
             shipSprite.paintIcon(this, g, logic.getPlayerXpos(), logic.getPlayerYpos());
 
+        }
+
+        if(laserSprite != null){
+            for(Point p : logic.getLasers()){
+                laserSprite.paintIcon(this, g, p.x, p.y);
+            }
         }
     }
 

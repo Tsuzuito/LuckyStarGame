@@ -31,11 +31,11 @@ public class SnakeFood {
 
         Point temp;
         do{
-            System.out.println("beb");
             this.xPos = padding + (random.nextInt(maxCellsX) * gridSize);
             this.yPos = padding + (random.nextInt(maxCellsY) * gridSize);
 
             temp = new Point(xPos, yPos);
         } while(snakeBody.contains(temp));
+        System.out.println("Food generated successfully at:  \nx: " + this.xPos + "\ny: " + this.yPos);
     }
 }
