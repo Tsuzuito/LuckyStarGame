@@ -8,9 +8,6 @@ import java.time.format.DateTimeFormatter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
-//Remade to JSON with support for modes and score history
-
 public class GameSaveManager {
 
     private int bestScore = 0;

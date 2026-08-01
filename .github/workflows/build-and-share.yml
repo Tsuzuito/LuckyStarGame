@@ -25,8 +25,16 @@ jobs:
           find src -name "*.java" > sources.txt
           javac -d out @sources.txt
           
+          javac -cp "lib/gson-2.10.1.jar" -d out @sources.txt
+          
           if [ -d "resources" ]; then
             cp -r resources/* out/
+          fi
+          
+          if [ -f "lib/gson-2.10.1.jar" ]; then
+            cd out
+            jar xf ../lib/gson-2.10.1.jar
+            cd ..
           fi
           
           jar cfe LuckyStarGame.jar LuckyStarGame -C out .
