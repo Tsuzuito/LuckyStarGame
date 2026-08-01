@@ -155,7 +155,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
 
         if(e.getSource()== backButton){ manager.show("gameSelect"); }
 
-        if(snake.isGameOver()){
+        if(!snake.isGameOver()){
             snake.tick();
             repaint();
             scoreLabel.setText("score: " + snake.score);
