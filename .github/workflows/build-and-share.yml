@@ -23,7 +23,6 @@ jobs:
           mkdir -p out
           
           find src -name "*.java" > sources.txt
-          javac -d out @sources.txt
           
           javac -cp "lib/gson-2.10.1.jar" -d out @sources.txt
           
