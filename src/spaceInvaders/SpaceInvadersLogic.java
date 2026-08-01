@@ -6,24 +6,29 @@ import java.util.List;
 
 public class SpaceInvadersLogic {
 
-    private final int gridSize = 16;
-    private int playerXpos = 400, playerYpos = 400;
-    private List<Point> lasers = new ArrayList<>();
+    private final int GRID_SIZE = 16;
+    private final int BOARD_WIDTH = 800;
+    private final int PLAYER_SPEED = 16;
+    private final int SHOOT_COOLDOWN = 3;
+
+    private int playerXpos = 400;
+    private final int playerYpos = 400;
+
+    private final List<Point> lasers = new  ArrayList<>();
 
     private boolean isMovingRight = false, isMovingLeft = false;
+
+    private int timeSinceLastShot = SHOOT_COOLDOWN;
+    public int tickCounter = 0;
 
     public SpaceInvadersLogic(){
 
     }
 
-    public int getPlayerXpos(){
-        return playerXpos;
-    }
-    public int getPlayerYpos(){
-        return playerYpos;
-    }
+    public int getPlayerXpos(){ return playerXpos; }
+    public int getPlayerYpos(){ return playerYpos; }
 
-    public List<Point> getLasers(){ return lasers; }
+    public List<Point> getLasers(){ return new ArrayList<>(lasers); }
 
     public void setMovingRight(){ isMovingRight = true; }
     public void setMovingLeft(){ isMovingLeft = true; }
@@ -32,19 +37,22 @@ public class SpaceInvadersLogic {
     public void stopMovingLeft(){ isMovingLeft = false; }
 
     public void shootFire(){
-        System.out.println("pew");
-        int shootPointX = this.playerXpos;
-        int shootPointY = this.playerYpos;
+        if(timeSinceLastShot >= SHOOT_COOLDOWN){
+            lasers.add(new Point(playerXpos, playerYpos));
+            timeSinceLastShot = 0;
+        }
 
-        lasers.add(new Point(shootPointX, shootPointY));
     }
 
     public void tick(){
-        if(isMovingRight){ playerXpos+=16; }
-        if(isMovingLeft){ playerXpos-=16; }
+        tickCounter++;
+        timeSinceLastShot++;
+
+        if(isMovingRight && playerXpos + PLAYER_SPEED < BOARD_WIDTH - GRID_SIZE){ playerXpos += PLAYER_SPEED; }
+        if(isMovingLeft && playerXpos - PLAYER_SPEED >= 0){ playerXpos -= PLAYER_SPEED; }
 
         for(Point laser : lasers){
-            laser.y -= gridSize;
+            laser.y -= GRID_SIZE;
         }
         lasers.removeIf(laser -> laser.y < 0);
     }

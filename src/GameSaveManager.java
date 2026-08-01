@@ -2,13 +2,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 
 //Remade to JSON with support for modes and score history
 
 public class GameSaveManager {
 
     private int bestScore = 0;
+
     private final Path filePath, appFolder;
+    private final Gson gson;
+
+    private AppSaveData saveData;
 
     public GameSaveManager(){
 
@@ -18,22 +28,12 @@ public class GameSaveManager {
         //Paths.get create a path base
         //resolve extend it
         this.appFolder = Paths.get(userHome, ".luckystar");
-        this.filePath = appFolder.resolve("game_scores.txt");
+        this.filePath = appFolder.resolve("game_scores.json");
+
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
 
         createAppFolder();
-
-        try{
-
-            if(Files.exists(filePath)){
-                String temp = Files.readString(filePath);
-                bestScore = Integer.parseInt(temp);
-            } else {
-                System.out.println("Save file not found");
-            }
-            //NumberFormatException if file corrupted or empty
-        } catch (IOException | NumberFormatException e){
-            System.err.println("Failed to read: " + e.getMessage());
-        }
+        loadData();
     }
 
     private void createAppFolder(){
@@ -44,17 +44,55 @@ public class GameSaveManager {
         }
     }
 
-    public int getBestScore(){ return this.bestScore; }
-//    public void setBestScore(int score){ this.bestScore = score; }
-
-    public void saveGame(int score){
+    //JSON read
+    private void loadData(){
         try {
-            Files.writeString(filePath, String.valueOf(score));
-            System.out.println("Successfully saved: " + filePath.toAbsolutePath());
+            if (Files.exists(filePath)) {
+                String jsonText = Files.readString(filePath);
+                this.saveData = gson.fromJson(jsonText, AppSaveData.class);
 
+                if (this.saveData == null) {
+                    this.saveData = new AppSaveData();
+                }
+                System.out.println("Successfully read JSON");
+            } else {
+                //
+                System.out.println("Save file not found. Creating new save data.");
+                this.saveData = new AppSaveData();
+            }
         } catch (IOException e) {
-            System.err.println("Failed to save: " + e.getMessage());
+            System.err.println("Failed to read JSON: " + e.getMessage());
+            //
+            this.saveData = new AppSaveData();
         }
-        this.bestScore = score;
     }
+
+    //Add score and save score
+    public void registerNewScore(String gameMode, int score) {
+        //get time
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDate = now.format(formatter);
+
+
+        ScoreEntry newEntry = new ScoreEntry(score, formattedDate);
+
+        //Detect game
+        if (gameMode.equalsIgnoreCase("snake")) {
+            saveData.getSnake().addScoreEntry(newEntry);
+        } else if (gameMode.equalsIgnoreCase("spaceInvaders")) {
+            saveData.getSpaceInvaders().addScoreEntry(newEntry);
+        }
+
+        //Trying to merge
+        try {
+            String jsonText = gson.toJson(saveData);
+            Files.writeString(filePath, jsonText);
+            System.out.println("Result saved to JSON for gamemode: " + gameMode);
+        } catch (IOException e) {
+            System.err.println("Failed to save JSON: " + e.getMessage());
+        }
+    }
+
+    public AppSaveData getSaveData() { return this.saveData; }
 }

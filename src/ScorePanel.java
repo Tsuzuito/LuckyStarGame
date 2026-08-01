@@ -9,7 +9,9 @@ public class ScorePanel extends JPanel implements ActionListener {
     private final GameSaveManager saveManager;
 
     private final JButton backButton = new JButton("Back");
-    private final JLabel bestScore = new JLabel("beb");
+
+    private final JLabel snakeBestLabel = new JLabel("Snake Best: 0");
+    private final JLabel spaceBestLabel = new JLabel("Space Invaders Best: 0");
 
     private final Image bgSprite;
 
@@ -17,6 +19,8 @@ public class ScorePanel extends JPanel implements ActionListener {
     public ScorePanel(PanelManager manager, GameSaveManager saveManager){
         this.manager = manager;
         this.saveManager = saveManager;
+
+        AppSaveData data = saveManager.getSaveData();
 
         setBackground(Color.black);
         bgSprite = new ImageIcon(getClass().getResource("sddefault.jpg")).getImage();
@@ -33,31 +37,10 @@ public class ScorePanel extends JPanel implements ActionListener {
         exitPanel.setBounds(0, 0, 120, 70);
         add(exitPanel);
 
-        bestScore.setBounds(0, 0, 0, 70);
-        bestScore.setForeground(Color.white);
 
-        bestScore.setText("Score: " + saveManager.getBestScore());
-        add(bestScore);
-
-        updateScore();
-
-        this.addComponentListener(new java.awt.event.ComponentAdapter(){
-            @Override
-            public void componentShown(java.awt.event.ComponentEvent e){
-                updateScore();
-            }
-        });
     }
 
-    private void updateScore() {
-        if (saveManager != null) {
-            bestScore.setText("Score: " + saveManager.getBestScore());
 
-
-            bestScore.revalidate();
-            bestScore.repaint();
-        }
-    }
 
     @Override
     public void paintComponent(Graphics g){

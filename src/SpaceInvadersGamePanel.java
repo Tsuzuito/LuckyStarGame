@@ -12,7 +12,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     private static final String MOVE_RIGHT = "move right";
     private static final String STOP_RIGHT= "stop right";
     private static final String STOP_LEFT= "stop left";
-    private static final String SHOOT_FIRE= "stoop left";
+    private static final String SHOOT_FIRE= "shoot fire";
 
     private final PanelManager manager;
     private final GameSaveManager saveManager;

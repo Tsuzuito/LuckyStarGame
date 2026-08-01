@@ -155,7 +155,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
 
         if(e.getSource()== backButton){ manager.show("gameSelect"); }
 
-        if(!snake.isGameOver()){
+        if(snake.isGameOver()){
             snake.tick();
             repaint();
             scoreLabel.setText("score: " + snake.score);
@@ -164,9 +164,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
             debugLabel.setText("tick: " + snake.tickCounter + "\n");
         } else {
             timer.stop();
-            if(saveManager.getBestScore() < snake.score){
-                saveManager.saveGame(snake.score);
-            }
+            saveManager.registerNewScore("snake", snake.score);
         }
     }
 }
