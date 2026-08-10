@@ -37,7 +37,20 @@ public class ScorePanel extends JPanel implements ActionListener {
         exitPanel.setBounds(0, 0, 120, 70);
         add(exitPanel);
 
+        snakeBestLabel.setBounds(10,100,100,100);
+        add(snakeBestLabel);
 
+        this.addComponentListener(new java.awt.event.ComponentAdapter(){
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e){
+                snakeBestLabel.setText("best: " + data.getSnake().getBestScore());
+            }
+
+            @Override
+            public void componentHidden(java.awt.event.ComponentEvent e){
+
+            }
+        });
     }
 
 
