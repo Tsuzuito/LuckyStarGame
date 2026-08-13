@@ -10,8 +10,6 @@ import com.google.gson.GsonBuilder;
 
 public class GameSaveManager {
 
-    private int bestScore = 0;
-
     private final Path filePath, appFolder;
     private final Gson gson;
 
@@ -68,7 +66,7 @@ public class GameSaveManager {
     public void registerNewScore(String gameMode, int score) {
         //get time
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         String formattedDate = now.format(formatter);
 
 
@@ -92,4 +90,19 @@ public class GameSaveManager {
     }
 
     public AppSaveData getSaveData() { return this.saveData; }
+
+    public void deleteUserData(){
+        if(Files.exists(filePath)){
+            try{
+                Files.delete(filePath);
+                System.out.println("Save file Successfully deleted");
+            } catch (IOException e){
+                System.err.println("Failed to delete save file: " + e.getMessage());
+            } finally {
+                this.saveData = new AppSaveData();
+            }
+        } else {
+            System.out.println("Save file did not exist.");
+        }
+    }
 }

@@ -153,7 +153,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(e.getSource()== backButton){ manager.show("gameSelect"); }
+        if(e.getSource()== backButton){ manager.show("gameSelect"); return; }
 
         if(!snake.isGameOver()){
             snake.tick();
