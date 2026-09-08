@@ -13,24 +13,38 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     private static final String STOP_RIGHT= "stop right";
     private static final String STOP_LEFT= "stop left";
     private static final String SHOOT_FIRE= "shoot fire";
+    private static final String STOP_SHOOT_FIRE= "stop shoot fire";
+
+    private final ImageIcon shipSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
+    private final ImageIcon laserSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
+    private final ImageIcon enemieSprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
 
     private final PanelManager manager;
+
     private final GameSaveManager saveManager;
 
     private final int gridSize = 16;
     private final Image bgSprite;
     private Timer timer;
 
-    private final ImageIcon shipSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
-    private final ImageIcon laserSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
 
-    private JButton exitButton = new JButton("Exit");
+    private JButton backButton = new JButton("Exit");
+    private final JLabel scoreLabel = new JLabel();
 
-    SpaceInvadersLogic logic = new SpaceInvadersLogic();
+    SpaceInvadersLogic spaceInvadersLogic = new SpaceInvadersLogic();
+
+    //debug
+    JLabel debugLabel = new JLabel();
 
     public SpaceInvadersGamePanel(PanelManager manager, GameSaveManager saveManager){
         this.manager = manager;
         this.saveManager = saveManager;
+
+        debugLabel.setBounds(5,545,100,10);
+        add(debugLabel);
+
+        scoreLabel.setBounds(400,1,100,10);
+        add(scoreLabel);
 
         bgSprite = new ImageIcon(getClass().getResource("LCGameSnakeGame.png")).getImage();
 
@@ -41,11 +55,11 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         exitPanel.setOpaque(false);
 
         Dimension btnSize = new Dimension(100,50);
-        exitButton.setPreferredSize(btnSize);
-        exitButton.addActionListener(this);
+        backButton.setPreferredSize(btnSize);
+        backButton.addActionListener(this);
 
         exitPanel.setBounds(0, 0, 120, 70);
-        exitPanel.add(exitButton);
+        exitPanel.add(backButton);
 
         add(exitPanel);
 
@@ -55,35 +69,42 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         Action userInputRIGHT = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logic.setMovingRight();
+                spaceInvadersLogic.setMovingRight();
             }
         };
 
         Action userInputLEFT = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logic.setMovingLeft();
+                spaceInvadersLogic.setMovingLeft();
             }
         };
 
         Action userInputReleaseLEFT = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logic.stopMovingLeft();
+                spaceInvadersLogic.stopMovingLeft();
             }
         };
 
         Action userInputReleaseRIGHT = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logic.stopMovingRight();
+                spaceInvadersLogic.stopMovingRight();
             }
         };
 
         Action userInputShootFire = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logic.shootFire();
+                spaceInvadersLogic.setShootFire();
+            }
+        };
+
+        Action userInputStopShootFire = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                spaceInvadersLogic.stopShootFire();
             }
         };
 
@@ -93,6 +114,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         getInputMap(IFW).put(KeyStroke.getKeyStroke("released A"), STOP_LEFT);
 
         getInputMap(IFW).put(KeyStroke.getKeyStroke("SPACE"), SHOOT_FIRE);
+        getInputMap(IFW).put(KeyStroke.getKeyStroke("released SPACE"), STOP_SHOOT_FIRE);
 
         getActionMap().put(MOVE_RIGHT, userInputRIGHT);
         getActionMap().put(MOVE_LEFT, userInputLEFT);
@@ -100,6 +122,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         getActionMap().put(STOP_LEFT, userInputReleaseLEFT);
 
         getActionMap().put(SHOOT_FIRE, userInputShootFire);
+        getActionMap().put(STOP_SHOOT_FIRE, userInputStopShootFire);
 
 
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
@@ -122,24 +145,37 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
 
         if (shipSprite != null) {
-            shipSprite.paintIcon(this, g, logic.getPlayerXpos(), logic.getPlayerYpos());
+            shipSprite.paintIcon(this, g, spaceInvadersLogic.getPlayerXpos(), spaceInvadersLogic.getPlayerYpos());
 
         }
 
         if(laserSprite != null){
-            for(Point p : logic.getLasers()){
+            for(Point p : spaceInvadersLogic.getLasers()){
                 laserSprite.paintIcon(this, g, p.x, p.y);
+            }
+        }
+
+        if(enemieSprite != null){
+            for(Point p : spaceInvadersLogic.getEnemies()){
+                enemieSprite.paintIcon(this, g, p.x, p.y);
             }
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        logic.tick();
+        if(e.getSource()== backButton){ manager.show("gameSelect"); return; }
 
-        if(e.getSource() == exitButton){
-            manager.show("gameSelect");
+        if(!spaceInvadersLogic.isGameOver()){
+            spaceInvadersLogic.tick();
+            repaint();
+            scoreLabel.setText("score: " + spaceInvadersLogic.score);
+
+            //debug
+            debugLabel.setText("tick: " + spaceInvadersLogic.tickCounter + "\n");
+        } else {
+            timer.stop();
+//            saveManager.registerNewScore("spaceInvaders", spaceInvadersLogic.score);
         }
-        repaint();
     }
 }

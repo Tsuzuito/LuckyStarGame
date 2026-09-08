@@ -22,7 +22,7 @@ public class SoundManager  {
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
 
-            clip.start();
+//            clip.start();
 
         } catch (Exception e){
             System.err.println("Something wrong: " + fileName);

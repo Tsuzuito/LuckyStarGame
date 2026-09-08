@@ -29,7 +29,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     private final JButton backButton = new JButton("Back");
     private final JLabel scoreLabel = new JLabel();
 
-    SnakeLogic snake = new SnakeLogic();
+    SnakeLogic snakeLogic = new SnakeLogic();
 
     //debug
     JLabel debugLabel = new JLabel();
@@ -38,10 +38,11 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         this.manager = manager;
         this.saveManager = saveManager;
 
-        //x, y, width, height
-        debugLabel.setBounds(1,1,100,10);
+
+        debugLabel.setBounds(5,545,100,10);
         add(debugLabel);
 
+        //x, y, width, height
         scoreLabel.setBounds(400,1,100,10);
         add(scoreLabel);
 
@@ -65,28 +66,28 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         Action userInputUP = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                snake.setDirectionUP();
+                snakeLogic.setDirectionUP();
             }
         };
 
         Action userInputDOWN = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                snake.setDirectionDOWN();
+                snakeLogic.setDirectionDOWN();
             }
         };
 
         Action userInputLEFT = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                snake.setDirectionLEFT();
+                snakeLogic.setDirectionLEFT();
             }
         };
 
         Action userInputRIGHT = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                snake.setDirectionRIGHT();
+                snakeLogic.setDirectionRIGHT();
             }
         };
 
@@ -105,14 +106,14 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
             @Override
             public void componentShown(java.awt.event.ComponentEvent e){
-                snake.updateDimensions(getWidth(), getHeight());
+                snakeLogic.updateDimensions(getWidth(), getHeight());
                 timer.start();
           }
 
           @Override
             public void componentHidden(java.awt.event.ComponentEvent e){
                 timer.stop();
-              snake.reset();
+              snakeLogic.reset();
           }
         });
     }
@@ -138,12 +139,12 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         }
 
         if (snakeSprite != null) {
-            for(Point p : snake.getSnake()){
+            for(Point p : snakeLogic.getSnake()){
                 snakeSprite.paintIcon(this, g, p.x, p.y);
             }
         }
         if (foodSprite != null) {
-            SnakeFood food = snake.getFood();
+            SnakeFood food = snakeLogic.getFood();
             foodSprite.paintIcon(this, g,
                     food.getxPos(),
                     food.getyPos());
@@ -152,19 +153,18 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if(e.getSource()== backButton){ manager.show("gameSelect"); return; }
 
-        if(!snake.isGameOver()){
-            snake.tick();
+        if(!snakeLogic.isGameOver()){
+            snakeLogic.tick();
             repaint();
-            scoreLabel.setText("score: " + snake.score);
+            scoreLabel.setText("score: " + snakeLogic.score);
 
             //debug
-            debugLabel.setText("tick: " + snake.tickCounter + "\n");
+            debugLabel.setText("tick: " + snakeLogic.tickCounter + "\n");
         } else {
             timer.stop();
-            saveManager.registerNewScore("snake", snake.score);
+            saveManager.registerNewScore("snake", snakeLogic.score);
         }
     }
 }
