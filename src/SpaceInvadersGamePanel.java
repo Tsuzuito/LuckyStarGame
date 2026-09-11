@@ -15,9 +15,11 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     private static final String SHOOT_FIRE= "shoot fire";
     private static final String STOP_SHOOT_FIRE= "stop shoot fire";
 
+    private static final String RESTART= "restart";
+
     private final ImageIcon shipSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
     private final ImageIcon laserSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
-    private final ImageIcon enemieSprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
+    private final ImageIcon enemiesSprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
 
     private final PanelManager manager;
 
@@ -39,6 +41,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     public SpaceInvadersGamePanel(PanelManager manager, GameSaveManager saveManager){
         this.manager = manager;
         this.saveManager = saveManager;
+        spaceInvadersLogic.reset();
 
         debugLabel.setBounds(5,545,100,10);
         add(debugLabel);
@@ -108,6 +111,13 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
             }
         };
 
+        Action userInputRestart = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                spaceInvadersLogic.reset();
+            }
+        };
+
         getInputMap(IFW).put(KeyStroke.getKeyStroke("D"), MOVE_RIGHT);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("A"), MOVE_LEFT);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("released D"), STOP_RIGHT);
@@ -116,6 +126,8 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         getInputMap(IFW).put(KeyStroke.getKeyStroke("SPACE"), SHOOT_FIRE);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("released SPACE"), STOP_SHOOT_FIRE);
 
+        getInputMap(IFW).put(KeyStroke.getKeyStroke("R"), RESTART);
+
         getActionMap().put(MOVE_RIGHT, userInputRIGHT);
         getActionMap().put(MOVE_LEFT, userInputLEFT);
         getActionMap().put(STOP_RIGHT, userInputReleaseRIGHT);
@@ -123,6 +135,8 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
 
         getActionMap().put(SHOOT_FIRE, userInputShootFire);
         getActionMap().put(STOP_SHOOT_FIRE, userInputStopShootFire);
+
+        getActionMap().put(RESTART, userInputRestart);
 
 
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
@@ -134,6 +148,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
             @Override
             public void componentHidden(java.awt.event.ComponentEvent e){
                 timer.stop();
+                spaceInvadersLogic.reset();
             }
         });
     }
@@ -155,9 +170,9 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
             }
         }
 
-        if(enemieSprite != null){
+        if(enemiesSprite != null){
             for(Point p : spaceInvadersLogic.getEnemies()){
-                enemieSprite.paintIcon(this, g, p.x, p.y);
+                enemiesSprite.paintIcon(this, g, p.x, p.y);
             }
         }
     }
@@ -166,7 +181,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()== backButton){ manager.show("gameSelect"); return; }
 
-        if(!spaceInvadersLogic.isGameOver()){
+        if(!spaceInvadersLogic.getIsGameOver()){
             spaceInvadersLogic.tick();
             repaint();
             scoreLabel.setText("score: " + spaceInvadersLogic.score);
@@ -175,7 +190,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
             debugLabel.setText("tick: " + spaceInvadersLogic.tickCounter + "\n");
         } else {
             timer.stop();
-//            saveManager.registerNewScore("spaceInvaders", spaceInvadersLogic.score);
+            saveManager.registerNewScore("spaceInvaders", spaceInvadersLogic.score);
         }
     }
 }

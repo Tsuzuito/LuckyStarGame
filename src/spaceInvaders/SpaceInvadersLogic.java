@@ -12,22 +12,22 @@ public class SpaceInvadersLogic {
     private final int PLAYER_SPEED = 16;
     private final int SHOOT_COOLDOWN = 3;
 
-    private int playerXpos = 400;
-    private final int playerYpos = 400;
+    private int playerXpos = 16*23;
+    private final int playerYpos = 16*25;
 
     private final List<Point> lasers = new  ArrayList<>();
     private final List<Point> enemies;
     private boolean isGameOver = false;
-
-    public int score = 0;
+    private boolean isEnemiesMovingReverse = false;
 
     private int moveWaitTime = 0;
+    private int timeSinceLastShot = 0;
+    private boolean isMovingRight = false, isMovingLeft = false, isShooting = false;
 
     SpaceInvadersEnemies enemyManager = new SpaceInvadersEnemies();
 
-    private boolean isMovingRight = false, isMovingLeft = false, isShooting = false;
+    public int score = 0;
 
-    private int timeSinceLastShot = 0;
     public int tickCounter = 0;
 
     public SpaceInvadersLogic(){
@@ -49,7 +49,20 @@ public class SpaceInvadersLogic {
     public void setShootFire(){ isShooting = true; }
     public void stopShootFire(){ isShooting = false; }
 
-    public boolean isGameOver(){ return isGameOver; }
+    public boolean getIsGameOver(){ return isGameOver; }
+
+    public void reset(){
+        enemyManager.killAllEnemies();
+        lasers.clear();
+
+        tickCounter = 0;
+        timeSinceLastShot = 0;
+        score = 0;
+        moveWaitTime = 0;
+
+        playerXpos = 16*23;
+        enemyManager.spawnEnemies();
+    }
 
     public void tick(){
         //debug
@@ -68,8 +81,22 @@ public class SpaceInvadersLogic {
             }
         }
 
-        if(moveWaitTime >= 10){
-            enemyManager.trytomove();
+        for(int i = 0; i < enemyManager.getEnemies().size(); i++){
+            if(enemies.get(i).x >= BOARD_WIDTH - GRID_SIZE * 2){
+                isEnemiesMovingReverse = true;
+                break;
+            } else if (enemies.get(i).x <= 0) {
+                isEnemiesMovingReverse = false;
+                break;
+            }
+        }
+
+        if (moveWaitTime >= 10) {
+            if (isEnemiesMovingReverse) {
+                enemyManager.moveEnemiesLeft();
+            } else {
+                enemyManager.moveEnemiesRight();
+            }
             moveWaitTime = 0;
         }
 
@@ -88,7 +115,7 @@ public class SpaceInvadersLogic {
                 Point enemy = enemies.get(i);
 
                 if(laser.equals(enemy)){
-                    enemyManager.trytokill(i);
+                    enemyManager.killEnemy(i);
                     laserIterator.remove();
                     score++;
                     break;

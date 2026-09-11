@@ -9,26 +9,43 @@ public class SpaceInvadersEnemies {
     private List<Point> enemies = new ArrayList<>();
 
     public SpaceInvadersEnemies(){
-        enemies.add(new Point(16*7,16*7));
-        enemies.add(new Point(16*9,16*7));
-        enemies.add(new Point(16*11,16*7));
+
     }
 
     public List<Point> getEnemies(){ return enemies; }
 
-    public void trytomove(){
-        int move16 = 16;
+    public void moveEnemiesRight(){
+        int moveSpeedRight = 16;
 
         for(Point enemy : enemies){
-            enemy.x += move16;
+            enemy.x += moveSpeedRight;
         }
     }
 
-    public void trytokill(int a){
-        enemies.remove(a);
+    public void moveEnemiesLeft(){
+        int moveSpeedRight = -16;
+
+        for(Point enemy : enemies){
+            enemy.x += moveSpeedRight;
+        }
     }
 
-    public void spawnEnemies(){
+    public void enemySpawner(int x, int y, int spacing, int count){
+        int startX = 16 * x;
+        int startY = 16 * y;
+        int step = 16*spacing;
 
+        for (int i = 0; i < count; i++) {
+            enemies.add(new Point(startX + (i * step), startY));
+        }
+    }
+
+    public void killEnemy(int a){ enemies.remove(a); }
+    public void killAllEnemies(){ enemies.clear(); }
+
+    public void spawnEnemies(){
+        //x,y,spacing,count
+        enemySpawner(7,7,2,10);
+        enemySpawner(7,9,2,10);
     }
 }
