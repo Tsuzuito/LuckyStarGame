@@ -19,7 +19,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
 
     private final ImageIcon shipSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
     private final ImageIcon laserSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
-    private final ImageIcon enemiesSprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
+    private final ImageIcon enemySprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
 
     private final PanelManager manager;
 
@@ -170,9 +170,9 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
             }
         }
 
-        if(enemiesSprite != null){
+        if(enemySprite != null){
             for(Point p : spaceInvadersLogic.getEnemies()){
-                enemiesSprite.paintIcon(this, g, p.x, p.y);
+                enemySprite.paintIcon(this, g, p.x, p.y);
             }
         }
     }

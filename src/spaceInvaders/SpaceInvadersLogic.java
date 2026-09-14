@@ -10,21 +10,19 @@ public class SpaceInvadersLogic {
     private final int GRID_SIZE = 16;
     private final int BOARD_WIDTH = 800;
     private final int PLAYER_SPEED = 16;
-    private final int SHOOT_COOLDOWN = 3;
 
     private int playerXpos = 16*23;
     private final int playerYpos = 16*25;
 
-    private final List<Point> lasers = new  ArrayList<>();
     private final List<Point> enemies;
     private boolean isGameOver = false;
     private boolean isEnemiesMovingReverse = false;
 
     private int moveWaitTime = 0;
-    private int timeSinceLastShot = 0;
     private boolean isMovingRight = false, isMovingLeft = false, isShooting = false;
 
     SpaceInvadersEnemies enemyManager = new SpaceInvadersEnemies();
+    SpaceInvadersLasers laserManager = new SpaceInvadersLasers();
 
     public int score = 0;
 
@@ -37,7 +35,7 @@ public class SpaceInvadersLogic {
     public int getPlayerXpos(){ return playerXpos; }
     public int getPlayerYpos(){ return playerYpos; }
 
-    public List<Point> getLasers(){ return new ArrayList<>(lasers); }
+    public List<Point> getLasers(){ return laserManager.getLasers(); }
     public List<Point> getEnemies(){ return new ArrayList<>(enemies); }
 
     public void setMovingRight(){ isMovingRight = true; }
@@ -53,10 +51,9 @@ public class SpaceInvadersLogic {
 
     public void reset(){
         enemyManager.killAllEnemies();
-        lasers.clear();
+        laserManager.reset();
 
         tickCounter = 0;
-        timeSinceLastShot = 0;
         score = 0;
         moveWaitTime = 0;
 
@@ -73,13 +70,8 @@ public class SpaceInvadersLogic {
         if(isMovingRight && playerXpos + PLAYER_SPEED < BOARD_WIDTH - GRID_SIZE) { playerXpos += PLAYER_SPEED; }
         if(isMovingLeft && playerXpos - PLAYER_SPEED >= 0) { playerXpos -= PLAYER_SPEED; }
 
-        timeSinceLastShot++;
-        if(isShooting){
-            if(timeSinceLastShot >= SHOOT_COOLDOWN){
-                lasers.add(new Point(playerXpos, playerYpos));
-                timeSinceLastShot = 0;
-            }
-        }
+        laserManager.tryShoot(playerXpos, playerYpos, isShooting);
+        laserManager.updatePositions();
 
         for(int i = 0; i < enemyManager.getEnemies().size(); i++){
             if(enemies.get(i).x >= BOARD_WIDTH - GRID_SIZE * 2){
@@ -99,30 +91,8 @@ public class SpaceInvadersLogic {
             }
             moveWaitTime = 0;
         }
+        int destroyed = laserManager.checkEnemyCollisions(enemyManager);
+        score += destroyed;
 
-        for(Point laser : lasers){
-            laser.y -= GRID_SIZE;
-        }
-
-        //enemies collision check
-        //Creates iterator object for laser list. Allow remove elements while loop
-        Iterator<Point> laserIterator = lasers.iterator();
-        while(laserIterator.hasNext()){
-            //use next laser (shift to right)
-            Point laser = laserIterator.next();
-
-            for(int i = 0; i < enemies.size(); i++){
-                Point enemy = enemies.get(i);
-
-                if(laser.equals(enemy)){
-                    enemyManager.killEnemy(i);
-                    laserIterator.remove();
-                    score++;
-                    break;
-                }
-            }
-        }
-
-        lasers.removeIf(laser -> laser.y < 0);
     }
 }
