@@ -175,6 +175,18 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
                 enemySprite.paintIcon(this, g, p.x, p.y);
             }
         }
+
+        if(enemySprite != null){
+            for(Point p : spaceInvadersLogic.getWalls()){
+                enemySprite.paintIcon(this, g, p.x, p.y);
+            }
+        }
+
+        if(laserSprite != null){
+            for(Point p : spaceInvadersLogic.getEnemyLasers()){
+                laserSprite.paintIcon(this, g, p.x, p.y);
+            }
+        }
     }
 
     @Override

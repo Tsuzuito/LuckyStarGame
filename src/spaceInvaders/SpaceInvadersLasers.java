@@ -4,14 +4,17 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class SpaceInvadersLasers {
 
     private final List<Point> lasers = new ArrayList<>();
+    private final List<Point> enemyLasers = new ArrayList<>();
 
     private final int GRID_SIZE = 16;
     private final int SHOOT_COOLDOWN = 3;
     private int timeSinceLastShot = 0;
+    private Random random = new Random();
 
     public SpaceInvadersLasers(){
 
@@ -19,6 +22,14 @@ public class SpaceInvadersLasers {
 
     public List<Point> getLasers(){
         return new ArrayList<>(lasers);
+    }
+
+    public List<Point> getEnemyLasers(){
+        return new ArrayList<>(enemyLasers);
+    }
+
+    public void removeLaser(Point laser) {
+        lasers.remove(laser);
     }
 
     public void tryShoot(int playerXpos, int playerYpos, boolean isShooting){
@@ -34,6 +45,11 @@ public class SpaceInvadersLasers {
             laser.y -= GRID_SIZE;
         }
         lasers.removeIf(laser -> laser.y < 0);
+
+        for(Point enemyLaser: enemyLasers){
+            enemyLaser.y +=  GRID_SIZE;
+        }
+        enemyLasers.removeIf(enemyLasers -> enemyLasers.y > 600);
     }
 
     public int checkEnemyCollisions(SpaceInvadersEnemies enemyManager){
@@ -59,8 +75,14 @@ public class SpaceInvadersLasers {
             }
         }
 
-
         return destroyedCount;
+    }
+
+    public void spawnEnemyLaser(List<Point> enemies){
+
+        if(random.nextInt(10) == 1){
+            enemyLasers.add(new Point(enemies.get(random.nextInt(enemies.size() ) ) ) );
+        }
     }
 
     public void reset(){

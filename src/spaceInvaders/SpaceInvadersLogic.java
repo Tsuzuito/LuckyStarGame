@@ -2,7 +2,6 @@ package spaceInvaders;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class SpaceInvadersLogic {
@@ -23,6 +22,8 @@ public class SpaceInvadersLogic {
 
     SpaceInvadersEnemies enemyManager = new SpaceInvadersEnemies();
     SpaceInvadersLasers laserManager = new SpaceInvadersLasers();
+    SpaceInvadersWalls wallManager = new SpaceInvadersWalls();
+
 
     public int score = 0;
 
@@ -35,8 +36,10 @@ public class SpaceInvadersLogic {
     public int getPlayerXpos(){ return playerXpos; }
     public int getPlayerYpos(){ return playerYpos; }
 
-    public List<Point> getLasers(){ return laserManager.getLasers(); }
     public List<Point> getEnemies(){ return new ArrayList<>(enemies); }
+    public List<Point> getEnemyLasers(){ return laserManager.getEnemyLasers(); }
+    public List<Point> getLasers(){ return laserManager.getLasers(); }
+    public List<Point> getWalls(){ return wallManager.getWalls(); }
 
     public void setMovingRight(){ isMovingRight = true; }
     public void setMovingLeft(){ isMovingLeft = true; }
@@ -52,6 +55,7 @@ public class SpaceInvadersLogic {
     public void reset(){
         enemyManager.killAllEnemies();
         laserManager.reset();
+        wallManager.reset();
 
         tickCounter = 0;
         score = 0;
@@ -72,6 +76,8 @@ public class SpaceInvadersLogic {
 
         laserManager.tryShoot(playerXpos, playerYpos, isShooting);
         laserManager.updatePositions();
+
+        wallManager.checkWallCollisions(laserManager);
 
         for(int i = 0; i < enemyManager.getEnemies().size(); i++){
             if(enemies.get(i).x >= BOARD_WIDTH - GRID_SIZE * 2){
@@ -94,5 +100,14 @@ public class SpaceInvadersLogic {
         int destroyed = laserManager.checkEnemyCollisions(enemyManager);
         score += destroyed;
 
+        laserManager.spawnEnemyLaser(enemyManager.getEnemies());
+
+        Point playerPosTemp = new Point(playerXpos, playerYpos);
+        for(Point enemyLasers : laserManager.getEnemyLasers()){
+            if(enemyLasers.equals(playerPosTemp)){
+                isGameOver = true;
+                break;
+            }
+        }
     }
 }

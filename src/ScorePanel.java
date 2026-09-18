@@ -14,8 +14,10 @@ public class ScorePanel extends JPanel implements ActionListener {
 
 
     private JList<String> snakeScoreHistory = new JList<>();
+    private JList<String> spaceInvadersScoreHistory = new JList<>();
     private JLabel snakeBestLabel = new JLabel("Snake Best: 0");
     private JScrollPane scrollPaneSnake = new JScrollPane(snakeScoreHistory);
+    private JScrollPane scrollPaneSpace = new JScrollPane(spaceInvadersScoreHistory);
 
     private final JLabel spaceBestLabel = new JLabel("Space Invaders Best: 0");
 
@@ -54,8 +56,14 @@ public class ScorePanel extends JPanel implements ActionListener {
         snakeBestLabel.setBounds(10,100,100,100);
         add(snakeBestLabel);
 
+        spaceBestLabel.setBounds(200,100,100,100);
+        add(spaceBestLabel);
+
         scrollPaneSnake.setBounds(10,100,100,100);
         add(scrollPaneSnake);
+
+        scrollPaneSpace.setBounds(10,100,100,100);
+        add(scrollPaneSpace);
 
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
             @Override
@@ -70,17 +78,34 @@ public class ScorePanel extends JPanel implements ActionListener {
         });
     }
 
-    public void updateScoreDisplay(){
+    public void updateScoreDisplay() {
         AppSaveData data = saveManager.getSaveData();
-        String[] textLines = new String[data.getSnake().getHistory().size()];
+        //
+        if (data == null) { return; }
 
-        for(int i = 0; i < data.getSnake().getHistory().size(); i++){
-            ScoreEntry entry = data.getSnake().getHistory().get(i);
-            textLines[i] = entry.getScore() + " Points. " + entry.getDate();
+        // update snake
+        if (data.getSnake() != null) {
+            var snakeHistory = data.getSnake().getHistory();
+            String[] snakeLines = new String[snakeHistory.size()];
+            for (int i = 0; i < snakeHistory.size(); i++) {
+                ScoreEntry entry = snakeHistory.get(i);
+                snakeLines[i] = entry.getScore() + " Points. " + entry.getDate();
+            }
+            snakeScoreHistory.setListData(snakeLines);
+            snakeBestLabel.setText("Snake Best: " + data.getSnake().getBestScore());
         }
 
-        snakeScoreHistory.setListData(textLines);
-        snakeBestLabel.setText("best: " + data.getSnake().getBestScore());
+        //
+        if (data.getSpaceInvaders() != null) {
+            var spaceHistory = data.getSpaceInvaders().getHistory();
+            String[] spaceLines = new String[spaceHistory.size()];
+            for (int i = 0; i < spaceHistory.size(); i++) {
+                ScoreEntry entry = spaceHistory.get(i);
+                spaceLines[i] = entry.getScore() + " Points. " + entry.getDate();
+            }
+            spaceInvadersScoreHistory.setListData(spaceLines);
+            spaceBestLabel.setText("Space Best: " + data.getSpaceInvaders().getBestScore());
+        }
     }
 
 
