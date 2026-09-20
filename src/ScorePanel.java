@@ -1,7 +1,10 @@
+import dataSaving.AppSaveData;
+import dataSaving.GameSaveManager;
+import dataSaving.ScoreEntry;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class ScorePanel extends JPanel implements ActionListener {
 
@@ -12,18 +15,20 @@ public class ScorePanel extends JPanel implements ActionListener {
     private final JButton backButton = new JButton("Back");
     private final JButton deleteData = new JButton("Delete Data");
 
-
+    //snake
     private JList<String> snakeScoreHistory = new JList<>();
-    private JList<String> spaceInvadersScoreHistory = new JList<>();
     private JLabel snakeBestLabel = new JLabel("Snake Best: 0");
     private JScrollPane scrollPaneSnake = new JScrollPane(snakeScoreHistory);
+
+    //space invaders
+    private JList<String> spaceInvadersScoreHistory = new JList<>();
+    private final JLabel spaceBestLabel = new JLabel("Space Invaders Best: 0");
     private JScrollPane scrollPaneSpace = new JScrollPane(spaceInvadersScoreHistory);
 
-    private final JLabel spaceBestLabel = new JLabel("Space Invaders Best: 0");
+    //
 
     private final Image bgSprite;
 
-    //wip
     public ScorePanel(PanelManager manager, GameSaveManager saveManager){
         this.manager = manager;
         this.saveManager = saveManager;
@@ -53,17 +58,21 @@ public class ScorePanel extends JPanel implements ActionListener {
 
         add(topPanel);
 
-        snakeBestLabel.setBounds(10,100,100,100);
+        //snake
+        snakeBestLabel.setBounds(10,40,100,100);
         add(snakeBestLabel);
 
-        spaceBestLabel.setBounds(200,100,100,100);
+        scrollPaneSnake.setBounds(10,100,160,200);
+        add(scrollPaneSpace);
+
+        //space invaders
+        spaceBestLabel.setBounds(200,40,100,100);
         add(spaceBestLabel);
 
-        scrollPaneSnake.setBounds(10,100,100,100);
+        scrollPaneSpace.setBounds(200,100,160,200);
         add(scrollPaneSnake);
 
-        scrollPaneSpace.setBounds(10,100,100,100);
-        add(scrollPaneSpace);
+        //
 
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
             @Override
@@ -95,7 +104,7 @@ public class ScorePanel extends JPanel implements ActionListener {
             snakeBestLabel.setText("Snake Best: " + data.getSnake().getBestScore());
         }
 
-        //
+        // update space
         if (data.getSpaceInvaders() != null) {
             var spaceHistory = data.getSpaceInvaders().getHistory();
             String[] spaceLines = new String[spaceHistory.size()];

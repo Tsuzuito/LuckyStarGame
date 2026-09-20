@@ -1,3 +1,5 @@
+package dataSaving;
+
 public class ScoreEntry{
     private final int score;
     private final String date;

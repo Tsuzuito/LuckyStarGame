@@ -26,7 +26,6 @@ public class SnakeLogic {
 
     public SnakeLogic(){
         food = new SnakeFood();
-        reset();
     }
 
     public List<Point> getSnake(){ return snake; }

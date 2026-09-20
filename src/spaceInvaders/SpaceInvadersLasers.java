@@ -32,6 +32,10 @@ public class SpaceInvadersLasers {
         lasers.remove(laser);
     }
 
+    public void removeEnemyLaser(Point laser) {
+        enemyLasers.remove(laser);
+    }
+
     public void tryShoot(int playerXpos, int playerYpos, boolean isShooting){
         timeSinceLastShot++;
         if(isShooting && timeSinceLastShot >= SHOOT_COOLDOWN){
@@ -87,6 +91,7 @@ public class SpaceInvadersLasers {
 
     public void reset(){
         lasers.clear();
+        enemyLasers.clear();
         timeSinceLastShot = 0;
     }
 }

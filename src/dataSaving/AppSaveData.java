@@ -1,3 +1,5 @@
+package dataSaving;
+
 public class AppSaveData {
 
     private final GameData snake = new GameData();

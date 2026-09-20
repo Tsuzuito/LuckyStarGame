@@ -23,6 +23,18 @@ public class MenuPanel extends JPanel implements ActionListener {
         button.setIcon(startButtonSprite);
         add(button);
         button.addActionListener(this);
+
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("mouse entered");
+            }
+            @Override
+            public void mouseExited(MouseEvent e){
+                System.out.println("mouse exited");
+            }
+        });
     }
 
     @Override

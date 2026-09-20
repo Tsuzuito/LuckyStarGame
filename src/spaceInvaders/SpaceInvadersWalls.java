@@ -22,6 +22,7 @@ public class SpaceInvadersWalls {
 
     public void checkWallCollisions(SpaceInvadersLasers laserManager){
         List<Point> lasers = laserManager.getLasers();
+        List<Point> lasersEnemy = laserManager.getEnemyLasers();
 
         for(Point laser : lasers){
             if(wallHealthMap.containsKey(laser)){
@@ -34,6 +35,19 @@ public class SpaceInvadersWalls {
                     wallHealthMap.put(laser, currentHealth);
                 }
                 laserManager.removeLaser(laser);
+            }
+        }
+
+        for(Point laser : lasersEnemy){
+            if(wallHealthMap.containsKey(laser)){
+                int currentHealth = wallHealthMap.get(laser) - 1;
+
+                if(currentHealth <= 0){
+                    wallHealthMap.remove(laser);
+                } else {
+                    wallHealthMap.put(laser, currentHealth);
+                }
+                laserManager.removeEnemyLaser(laser);
             }
         }
     }

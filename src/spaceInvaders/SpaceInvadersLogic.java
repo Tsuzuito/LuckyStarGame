@@ -63,6 +63,7 @@ public class SpaceInvadersLogic {
 
         playerXpos = 16*23;
         enemyManager.spawnEnemies();
+        isGameOver = false;
     }
 
     public void tick(){
