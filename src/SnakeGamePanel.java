@@ -49,7 +49,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
 
         setLayout(null);
         setBackground(Color.black);
-        bgSprite = new ImageIcon(getClass().getResource("LCGameSnakeGame.png")).getImage();
+        bgSprite = new ImageIcon(getClass().getResource("LSGameSnakeGame.png")).getImage();
         timer = new Timer(400, this);
 
         //Exit button

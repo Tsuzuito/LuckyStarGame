@@ -24,7 +24,7 @@ public class GameSelectPanel extends JPanel implements ActionListener {
         this.manager = manager;
 
         setBackground(Color.black);
-        bgSprite = new ImageIcon(getClass().getResource("LCGameGameSelectScreen.png")).getImage();
+        bgSprite = new ImageIcon(getClass().getResource("LSGameGameSelectScreen.png")).getImage();
 
         setLayout(new BorderLayout());
 

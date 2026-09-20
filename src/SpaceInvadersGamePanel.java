@@ -50,7 +50,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         scoreLabel.setBounds(400,1,100,10);
         add(scoreLabel);
 
-        bgSprite = new ImageIcon(getClass().getResource("LCGameSnakeGame.png")).getImage();
+        bgSprite = new ImageIcon(getClass().getResource("LSGameSnakeGame.png")).getImage();
 
         setBackground(Color.BLACK);
         setLayout(null);

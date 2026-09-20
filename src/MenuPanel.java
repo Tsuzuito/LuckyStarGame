@@ -14,7 +14,7 @@ public class MenuPanel extends JPanel implements ActionListener {
         this.manager = manager;
 
         setBackground(Color.black);
-        bgSprite = new ImageIcon(getClass().getResource("LCGameStartScreen.png")).getImage();
+        bgSprite = new ImageIcon(getClass().getResource("LSGameStartScreen.png")).getImage();
         ImageIcon startButtonSprite = new ImageIcon(getClass().getResource("Untitled-2.png"));
 
         setLayout(new GridBagLayout());
@@ -29,6 +29,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             @Override
             public void mouseEntered(MouseEvent e) {
                 System.out.println("mouse entered");
+                SoundManager.playSound("/LSopening1s.wav");
             }
             @Override
             public void mouseExited(MouseEvent e){
@@ -47,7 +48,6 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button){
-            SoundManager.playSound("/funnyclinksound.wav");
             manager.show("gameSelect");
 
         }
