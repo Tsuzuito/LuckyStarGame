@@ -5,6 +5,8 @@ import dataSaving.ScoreEntry;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 public class ScorePanel extends JPanel implements ActionListener {
 
@@ -14,6 +16,7 @@ public class ScorePanel extends JPanel implements ActionListener {
 
     private final JButton backButton = new JButton("Back");
     private final JButton deleteData = new JButton("Delete Data");
+    private final JButton opendatafolder = new JButton("folderdata");
 
     //snake
     private JList<String> snakeScoreHistory = new JList<>();
@@ -52,6 +55,11 @@ public class ScorePanel extends JPanel implements ActionListener {
         deleteData.setPreferredSize(btnSize);
         deleteData.addActionListener(this);
         rightPanel.add(deleteData);
+
+        //deletelater
+        opendatafolder.setPreferredSize(btnSize);
+        opendatafolder.addActionListener(this);
+//        rightPanel.add(opendatafolder);
 
         topPanel.add(leftPanel, BorderLayout.WEST);
         topPanel.add(rightPanel, BorderLayout.EAST);
@@ -127,8 +135,17 @@ public class ScorePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()== backButton){ manager.show("gameSelect"); }
-        if(e.getSource()== deleteData){ saveManager.deleteUserData(); updateScoreDisplay();}
+        if(e.getSource() == backButton){ manager.show("gameSelect"); }
+        if(e.getSource() == deleteData){ saveManager.deleteUserData(); updateScoreDisplay();}
+
+        // temp
+        if(e.getSource() == opendatafolder){
+            try {
+                Desktop.getDesktop().open(new File("C:\\Users\\tsuzu\\.luckystar"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
 
     }
 }
