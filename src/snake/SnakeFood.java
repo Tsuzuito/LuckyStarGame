@@ -12,8 +12,7 @@ public class SnakeFood {
     private final int gridSize = 16;
 
     public SnakeFood(){
-        xPos = 16 * 4;
-        yPos = 16 * 4;
+
     }
 
     public int getxPos() { return this.xPos; }
@@ -24,10 +23,12 @@ public class SnakeFood {
 //    }
 
     public void resetFood(int width, int height, int padding, List<Point> snakeBody){
-        int playableWidth = width - (padding * 4);
-        int playableHeight = height - (padding * 4);
+        int playableWidth = width - (padding * 2);
+        int playableHeight = height - (padding * 2);
+
         int maxCellsX = playableWidth / gridSize;
         int maxCellsY = playableHeight / gridSize;
+
 
         Point temp;
         do{

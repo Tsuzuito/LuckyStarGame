@@ -67,8 +67,6 @@ public class SpaceInvadersLogic {
     }
 
     public void tick(){
-        //debug
-        System.out.println("\ntick: " + tickCounter);
         tickCounter++;
         moveWaitTime++;
 

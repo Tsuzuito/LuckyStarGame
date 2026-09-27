@@ -59,7 +59,7 @@ public class ScorePanel extends JPanel implements ActionListener {
         //deletelater
         opendatafolder.setPreferredSize(btnSize);
         opendatafolder.addActionListener(this);
-//        rightPanel.add(opendatafolder);
+        rightPanel.add(opendatafolder);
 
         topPanel.add(leftPanel, BorderLayout.WEST);
         topPanel.add(rightPanel, BorderLayout.EAST);

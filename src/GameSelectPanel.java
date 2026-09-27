@@ -18,6 +18,7 @@ public class GameSelectPanel extends JPanel implements ActionListener {
     private final JButton miyukiGameButton = new JButton("...");
 
     private final JButton backToMenu = new JButton("Back");
+
     private final JButton scoreMenu = new JButton("Scores");
 
     public GameSelectPanel(PanelManager manager) {
@@ -79,16 +80,22 @@ public class GameSelectPanel extends JPanel implements ActionListener {
         if(e.getSource()== backToMenu){
             manager.show("menu");
         }
-
         if(e.getSource()== scoreMenu){
             manager.show("scoreMenu");
         }
+
         //-------------------------
         if(e.getSource() == konataGameButton){
             manager.show("gameSnake");
         }
         if(e.getSource() == kagamiGameButton){
             manager.show("gameSpaceInvaders");
+        }
+        if(e.getSource() == tsukasaGameButton){
+
+        }
+        if(e.getSource() == miyukiGameButton){
+
         }
     }
 }

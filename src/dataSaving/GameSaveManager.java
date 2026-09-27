@@ -54,7 +54,7 @@ public class GameSaveManager {
                 System.out.println("Successfully read JSON");
             } else {
                 //
-                System.out.println("Save file not found. Creating new save data.");
+                System.out.println("Save file not found. New save file will be created");
                 this.saveData = new AppSaveData();
             }
         } catch (IOException e) {

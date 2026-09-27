@@ -1,6 +1,7 @@
 import dataSaving.GameSaveManager;
 import snake.SnakeFood;
 import snake.SnakeLogic;
+import snake.SnakeWalls;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
 
     private final ImageIcon snakeSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
     private final ImageIcon foodSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
+    private final ImageIcon wallSprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
 
     private final JButton backButton = new JButton("Back");
     private final JLabel scoreLabel = new JLabel();
@@ -150,6 +152,12 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
                     food.getxPos(),
                     food.getyPos());
         }
+        if(wallSprite != null) {
+            SnakeWalls walls = snakeLogic.getWalls();
+            for(Point wallPoint : walls.getWalls()){
+                wallSprite.paintIcon(this, g, wallPoint.x, wallPoint.y);
+            }
+        }
     }
 
     @Override
@@ -159,13 +167,13 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         if(!snakeLogic.isGameOver()){
             snakeLogic.tick();
             repaint();
-            scoreLabel.setText("score: " + snakeLogic.score);
+            scoreLabel.setText("score: " + snakeLogic.getScore());
 
             //debug
             debugLabel.setText("tick: " + snakeLogic.tickCounter + "\n");
         } else {
             timer.stop();
-            saveManager.registerNewScore("snake", snakeLogic.score);
+            saveManager.registerNewScore("snake", snakeLogic.getScore());
         }
     }
 }

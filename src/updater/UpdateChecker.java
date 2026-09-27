@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class UpdateChecker {
-    private static final String CURRENT_VERSION = "0.1.1";
+    private static final String CURRENT_VERSION = "0.0.1";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/Tsuzuito/LuckyStarGame/releases/latest";
 
     public static String getVersion(){ return CURRENT_VERSION; }

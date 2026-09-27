@@ -5,8 +5,11 @@ import sound.SoundManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class SnakeLogic {
+
+    private Random random = new Random();
 
     private List<Point> snake = new ArrayList<>();
     private final int gridSize = 16;
@@ -16,20 +19,25 @@ public class SnakeLogic {
     private int panelHeight = 600;
 
     private SnakeFood food;
+    private SnakeWalls walls;
     private boolean isGameOver = false;
     public int tickCounter = 0;
 
-    public int score = 0;
+    private int score = 0;
 
     private enum Direction { UP, DOWN, LEFT, RIGHT }
     private Direction direction = Direction.RIGHT;
 
     public SnakeLogic(){
         food = new SnakeFood();
+        walls = new SnakeWalls();
+
     }
 
     public List<Point> getSnake(){ return snake; }
     public SnakeFood getFood() { return food; }
+    public SnakeWalls getWalls() { return walls; }
+    public int getScore(){ return score; }
 
     public void updateDimensions(int width, int height) {
         this.panelWidth = width;
@@ -52,20 +60,25 @@ public class SnakeLogic {
     public boolean isGameOver(){ return isGameOver; }
 
     public void reset(){
+
         snake.clear();
-        snake.add(new Point(padding + gridSize * 3, padding + gridSize * 3));
+        walls.resetWalls();
+
+        snake.add(new Point(padding + gridSize * 19, padding + gridSize * 12));
+
         direction = Direction.RIGHT;
         isGameOver = false;
         score = 0;
-
         tickCounter = 0;
+
+        for(int wallsCount = 0; wallsCount < random.nextInt(8)+4; wallsCount++){
+            walls.wallGenerator(panelWidth, panelHeight, padding, gridSize);
+        }
 
         food.resetFood(panelWidth, panelHeight, padding, snake);
     }
 
     public void tick(){
-        //debug
-        System.out.println("\ntick: " + tickCounter);
         tickCounter++;
 
         Point head = snake.get(0);
