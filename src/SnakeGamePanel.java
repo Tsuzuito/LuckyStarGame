@@ -25,6 +25,8 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     private static final String MOVE_LEFT = "move left";
     private static final String MOVE_RIGHT = "move right";
 
+    private static final String RESTART= "restart";
+
     private final ImageIcon snakeSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
     private final ImageIcon foodSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
     private final ImageIcon wallSprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
@@ -94,17 +96,28 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
             }
         };
 
+        Action userInputRestart = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                snakeLogic.reset();
+            }
+        };
+
         //(key, action)
         getInputMap(IFW).put(KeyStroke.getKeyStroke("W"), MOVE_UP);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("A"), MOVE_LEFT);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("S"), MOVE_DOWN);
         getInputMap(IFW).put(KeyStroke.getKeyStroke("D"), MOVE_RIGHT);
 
+        getInputMap(IFW).put(KeyStroke.getKeyStroke("R"), RESTART);
+
         //(action, actionMethod)
         getActionMap().put(MOVE_UP, userInputUP);
         getActionMap().put(MOVE_DOWN, userInputDOWN);
         getActionMap().put(MOVE_LEFT, userInputLEFT);
         getActionMap().put(MOVE_RIGHT, userInputRIGHT);
+
+        getActionMap().put(RESTART, userInputRestart);
 
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
             @Override

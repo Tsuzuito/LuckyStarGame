@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class ScorePanel extends JPanel implements ActionListener {
 
@@ -138,10 +139,13 @@ public class ScorePanel extends JPanel implements ActionListener {
         if(e.getSource() == backButton){ manager.show("gameSelect"); }
         if(e.getSource() == deleteData){ saveManager.deleteUserData(); updateScoreDisplay();}
 
-        // temp
-        if(e.getSource() == opendatafolder){
+        if (e.getSource() == opendatafolder) {
             try {
-                Desktop.getDesktop().open(new File("C:\\Users\\tsuzu\\.luckystar"));
+                File appFolder = Paths.get(System.getProperty("user.home"), ".luckystar").toFile();
+                if (!appFolder.exists()) {
+                    appFolder.mkdirs();
+                }
+                Desktop.getDesktop().open(appFolder);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
