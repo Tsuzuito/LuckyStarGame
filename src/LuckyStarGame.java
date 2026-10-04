@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class LuckyStarGame {
 
@@ -7,11 +8,15 @@ public class LuckyStarGame {
         JFrame frame = new JFrame("LSGame");
 
         PanelManager manager = new PanelManager();
-        frame.add(manager.getContainer());
+        JComponent content = manager.getContainer();
 
-        frame.setSize(800,600);
+        content.setPreferredSize(new Dimension(800,600));
+
+        frame.add(content);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

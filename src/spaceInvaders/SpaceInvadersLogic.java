@@ -70,7 +70,7 @@ public class SpaceInvadersLogic {
         tickCounter++;
         moveWaitTime++;
 
-        if(isMovingRight && playerXpos + PLAYER_SPEED < BOARD_WIDTH - GRID_SIZE) { playerXpos += PLAYER_SPEED; }
+        if(isMovingRight && playerXpos + PLAYER_SPEED < BOARD_WIDTH) { playerXpos += PLAYER_SPEED; }
         if(isMovingLeft && playerXpos - PLAYER_SPEED >= 0) { playerXpos -= PLAYER_SPEED; }
 
         laserManager.tryShoot(playerXpos, playerYpos, isShooting);
@@ -79,7 +79,7 @@ public class SpaceInvadersLogic {
         wallManager.checkWallCollisions(laserManager);
 
         for(int i = 0; i < enemyManager.getEnemies().size(); i++){
-            if(enemies.get(i).x >= BOARD_WIDTH - GRID_SIZE * 2){
+            if(enemies.get(i).x >= BOARD_WIDTH - GRID_SIZE){
                 isEnemiesMovingReverse = true;
                 break;
             } else if (enemies.get(i).x <= 0) {

@@ -8,10 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//KeyListener sucks
 public class SnakeGamePanel extends JPanel implements ActionListener {
 
-    //work in progress
     private final PanelManager manager;
     private Timer timer;
     private final int gridSize = 16;
@@ -42,7 +40,6 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     public SnakeGamePanel(PanelManager manager, GameSaveManager saveManager){
         this.manager = manager;
         this.saveManager = saveManager;
-
 
         debugLabel.setBounds(5,545,100,10);
         add(debugLabel);
@@ -124,13 +121,13 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
             public void componentShown(java.awt.event.ComponentEvent e){
                 snakeLogic.updateDimensions(getWidth(), getHeight());
                 timer.start();
-          }
+            }
 
-          @Override
+            @Override
             public void componentHidden(java.awt.event.ComponentEvent e){
                 timer.stop();
-              snakeLogic.reset();
-          }
+                snakeLogic.reset();
+            }
         });
     }
 
@@ -141,17 +138,23 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
 
         int padding = 16 * 4;
-        Graphics g2d = (Graphics) g;
+
+        int cols = (getWidth()  - 2 * padding) / gridSize;
+        int rows = (getHeight() - 2 * padding) / gridSize;
+
+        int gridWidth  = cols * gridSize;
+        int gridHeight = rows * gridSize;
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(new Color(161, 161, 161));
 
-        //point 1 -> x1,y2
-        //point 2 -> x2,y2
-        for(int x = padding; x <= getWidth() - padding; x += gridSize){
-            g2d.drawLine(x, padding , x, getHeight() - padding - 1);
+        for (int i = 0; i <= cols; i++) {
+            int x = padding + i * gridSize;
+            g2d.drawLine(x, padding, x, padding + gridHeight);
         }
 
-        for(int y = padding; y <= getHeight() - padding; y += gridSize){
-            g2d.drawLine(padding, y, getWidth() - padding, y);
+        for (int i = 0; i <= rows; i++) {
+            int y = padding + i * gridSize;
+            g2d.drawLine(padding, y, padding + gridWidth, y);
         }
 
         if (snakeSprite != null) {
@@ -183,7 +186,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
             scoreLabel.setText("score: " + snakeLogic.getScore());
 
             //debug
-            debugLabel.setText("tick: " + snakeLogic.tickCounter + "\n");
+            debugLabel.setText("tick: " + snakeLogic.tickCounter);
         } else {
             timer.stop();
             saveManager.registerNewScore("snake", snakeLogic.getScore());
