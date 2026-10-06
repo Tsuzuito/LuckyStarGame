@@ -12,9 +12,11 @@ public class PanelManager{
     public PanelManager() {
         container.add(new MenuPanel(this), "menu");
         container.add(new GameSelectPanel(this), "gameSelect");
-        container.add(new SnakeGamePanel(this, saveManager), "gameSnake");
         container.add(new ScorePanel(this, saveManager), "scoreMenu");
+
+        container.add(new SnakeGamePanel(this, saveManager), "gameSnake");
         container.add(new SpaceInvadersGamePanel(this, saveManager), "gameSpaceInvaders");
+//        container.add(new MemoryMatchingPanel(this, saveManager), "gameMemoryMatching");
     }
 
     public JPanel getContainer() {

@@ -17,7 +17,7 @@ public class ScorePanel extends JPanel implements ActionListener {
 
     private final JButton backButton = new JButton("Back");
     private final JButton deleteData = new JButton("Delete Data");
-    private final JButton opendatafolder = new JButton("folderdata");
+    private final JButton openDataFolder = new JButton("folderdata");
 
     //snake
     private JList<String> snakeScoreHistory = new JList<>();
@@ -58,9 +58,9 @@ public class ScorePanel extends JPanel implements ActionListener {
         rightPanel.add(deleteData);
 
         //deletelater
-        opendatafolder.setPreferredSize(btnSize);
-        opendatafolder.addActionListener(this);
-        rightPanel.add(opendatafolder);
+        openDataFolder.setPreferredSize(btnSize);
+        openDataFolder.addActionListener(this);
+        rightPanel.add(openDataFolder);
 
         topPanel.add(leftPanel, BorderLayout.WEST);
         topPanel.add(rightPanel, BorderLayout.EAST);
@@ -139,7 +139,7 @@ public class ScorePanel extends JPanel implements ActionListener {
         if(e.getSource() == backButton){ manager.show("gameSelect"); }
         if(e.getSource() == deleteData){ saveManager.deleteUserData(); updateScoreDisplay();}
 
-        if (e.getSource() == opendatafolder) {
+        if (e.getSource() == openDataFolder) {
             try {
                 File appFolder = Paths.get(System.getProperty("user.home"), ".luckystar").toFile();
                 if (!appFolder.exists()) {

@@ -19,5 +19,8 @@ public class LuckyStarGame {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        //We need a JComponent because if we set the window size using frame.setSize
+        //it will be the size of the ENTIRE window including the system borders rather than just the game area
     }
 }

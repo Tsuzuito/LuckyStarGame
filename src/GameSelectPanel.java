@@ -17,6 +17,7 @@ public class GameSelectPanel extends JPanel implements ActionListener {
     //Memory
     private final JButton miyukiGameButton = new JButton("...");
 
+
     private final JButton backToMenu = new JButton("Back");
 
     private final JButton scoreMenu = new JButton("Scores");

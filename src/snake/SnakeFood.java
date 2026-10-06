@@ -7,6 +7,8 @@ import java.util.List;
 //🍏
 public class SnakeFood {
 
+    //rewrite food to support multiple food points at the same time
+
     private Random random = new Random();
     private int xPos, yPos;
     private final int gridSize = 16;

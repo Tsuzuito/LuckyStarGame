@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//KeyListener still sucks
 public class SnakeGamePanel extends JPanel implements ActionListener {
 
     private final PanelManager manager;
@@ -134,24 +135,29 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
         g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
 
+        //Calculate grid columns rows and dimensions based on window size
         int padding = 16 * 4;
-
         int cols = (getWidth()  - 2 * padding) / gridSize;
         int rows = (getHeight() - 2 * padding) / gridSize;
-
         int gridWidth  = cols * gridSize;
         int gridHeight = rows * gridSize;
+
+        //Setup graphics for grid lines
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(new Color(161, 161, 161));
 
+        //Draw vertical grid lines
+
+        //draws a line connecting the points
+        //from (x1, y1) to (x2, y2)
         for (int i = 0; i <= cols; i++) {
             int x = padding + i * gridSize;
             g2d.drawLine(x, padding, x, padding + gridHeight);
         }
 
+        //Draw horizontal grid lines
         for (int i = 0; i <= rows; i++) {
             int y = padding + i * gridSize;
             g2d.drawLine(padding, y, padding + gridWidth, y);

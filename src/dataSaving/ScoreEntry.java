@@ -4,7 +4,7 @@ public class ScoreEntry{
     private final int score;
     private final String date;
 
-
+    //Store individual score and timestamp
     public ScoreEntry(int score, String date){
         this.score = score;
         this.date = date;

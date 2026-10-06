@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class SnakeWalls {
 
-    private final Random random = new Random(123);
+    private final Random random = new Random();
     private final List<Point> walls = new ArrayList<>();
 
     public SnakeWalls(){
@@ -19,9 +19,9 @@ public class SnakeWalls {
     public void resetWalls(){ walls.clear(); }
 
     public void wallGenerator(int panelWidth, int panelHeight, int padding, int gridSize) {
-        int wallLength = random.nextInt(12) + 2;
+        int wallLength = random.nextInt(12) + 6;
 
-        int cols = (panelWidth  - 2 * padding) / gridSize;
+        int cols = (panelWidth - 2 * padding) / gridSize;
         int rows = (panelHeight - 2 * padding) / gridSize;
 
         int maxX = padding + (cols - 1) * gridSize;
@@ -32,7 +32,7 @@ public class SnakeWalls {
 
         walls.add(new Point(startX, startY));
 
-        for (int i = 0; i < wallLength - 1; i++) {
+        for(int i = 0; i < wallLength - 1; i++) {
             Point prevPoint = walls.get(walls.size() - 1);
             int newX = prevPoint.x;
             int newY = prevPoint.y;

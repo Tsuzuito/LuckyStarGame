@@ -15,6 +15,7 @@ public class GameData {
     public List<ScoreEntry> getHistory(){ return new ArrayList<>(history); }
 
     public void addScoreEntry(ScoreEntry entry){
+        //Add entry to history and update best score if needed
         history.add(entry);
         if(entry.getScore() > bestScore){
             bestScore = entry.getScore();

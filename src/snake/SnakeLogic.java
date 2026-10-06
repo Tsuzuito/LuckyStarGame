@@ -64,14 +64,14 @@ public class SnakeLogic {
         snake.clear();
         walls.resetWalls();
 
-        snake.add(new Point(padding + gridSize * 19, padding + gridSize * 12));
+        snake.add(new Point(gridSize * 23, gridSize * 18));
 
         direction = Direction.RIGHT;
         isGameOver = false;
         score = 0;
         tickCounter = 0;
 
-        for(int wallsCount = 0; wallsCount < random.nextInt(8)+4; wallsCount++){
+        for(int wallsCount = 0; wallsCount < random.nextInt(12)+8; wallsCount++){
             walls.wallGenerator(panelWidth, panelHeight, padding, gridSize);
         }
 

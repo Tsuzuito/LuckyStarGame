@@ -17,18 +17,29 @@ public class GameSaveManager {
 
     private AppSaveData saveData;
 
+    /*
+    GameSaveManager receives the score and game mode -> creates a date and a ScoreEntry object (a single entry containing the score and time).
+    GameSaveManager passes this object to the AppSaveData class -> selects the desired game (snake or spaceInvaders).
+    From AppSaveData, the data goes to the GameData class -> the addScoreEntry() method adds an entry to the history and updates the bestScore record if it has been beaten.
+    The entire updated structure is returned to GameSaveManager -> the Gson library converts the data into JSON text.
+    GameSaveManager writes the finished JSON text to the drive in the file game_scores.json.
+     */
+
     public GameSaveManager(){
 
         //Current user folder (any OS)
         String userHome = System.getProperty("user.home");
-        //Path to app folder
+        //Set path to app folder and save file
+
         //Paths.get create a path base
         //resolve extend it
         this.appFolder = Paths.get(userHome, ".luckystar");
         this.filePath = appFolder.resolve("game_scores.json");
 
+        //Initialize Gson for JSON formatting
         this.gson = new GsonBuilder().setPrettyPrinting().create();
 
+        //Create folder and load existing data
         createAppFolder();
         loadData();
     }
@@ -45,6 +56,7 @@ public class GameSaveManager {
     private void loadData(){
         try {
             if (Files.exists(filePath)) {
+                //read and parse existing JSON save file
                 String jsonText = Files.readString(filePath);
                 this.saveData = gson.fromJson(jsonText, AppSaveData.class);
 
@@ -53,7 +65,7 @@ public class GameSaveManager {
                 }
                 System.out.println("Successfully read JSON");
             } else {
-                //
+                //File not found, initialize new save data
                 System.out.println("Save file not found. New save file will be created");
                 this.saveData = new AppSaveData();
             }
@@ -66,22 +78,22 @@ public class GameSaveManager {
 
     //Add score and save score
     public void registerNewScore(String gameMode, int score) {
-        //get time
+        //get current date and time
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         String formattedDate = now.format(formatter);
 
-
+        //create new score entry object
         ScoreEntry newEntry = new ScoreEntry(score, formattedDate);
 
-        //Detect game
+        //Detect game mode and add entry
         if (gameMode.equalsIgnoreCase("snake")) {
             saveData.getSnake().addScoreEntry(newEntry);
         } else if (gameMode.equalsIgnoreCase("spaceInvaders")) {
             saveData.getSpaceInvaders().addScoreEntry(newEntry);
         }
 
-        //Trying to merge
+        //Convert data to JSON and write to file
         try {
             String jsonText = gson.toJson(saveData);
             Files.writeString(filePath, jsonText);
