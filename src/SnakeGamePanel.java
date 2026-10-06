@@ -120,7 +120,6 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         this.addComponentListener(new java.awt.event.ComponentAdapter(){
             @Override
             public void componentShown(java.awt.event.ComponentEvent e){
-                snakeLogic.updateDimensions(getWidth(), getHeight());
                 timer.start();
             }
 
@@ -170,9 +169,9 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         }
         if (foodSprite != null) {
             SnakeFood food = snakeLogic.getFood();
-            foodSprite.paintIcon(this, g,
-                    food.getxPos(),
-                    food.getyPos());
+            for(Point foodPoint : food.getFoodPosition()){
+                foodSprite.paintIcon(this, g, foodPoint.x, foodPoint.y);
+            }
         }
         if(wallSprite != null) {
             SnakeWalls walls = snakeLogic.getWalls();

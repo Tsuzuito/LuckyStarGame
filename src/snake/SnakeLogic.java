@@ -19,7 +19,10 @@ public class SnakeLogic {
     private int panelHeight = 600;
 
     private SnakeFood food;
+    private int foodTargetCount = 2;
+
     private SnakeWalls walls;
+
     private boolean isGameOver = false;
     public int tickCounter = 0;
 
@@ -38,11 +41,6 @@ public class SnakeLogic {
     public SnakeFood getFood() { return food; }
     public SnakeWalls getWalls() { return walls; }
     public int getScore(){ return score; }
-
-    public void updateDimensions(int width, int height) {
-        this.panelWidth = width;
-        this.panelHeight = height;
-    }
 
     public void setDirectionUP(){
         if(direction != Direction.DOWN) this.direction = Direction.UP;
@@ -63,6 +61,7 @@ public class SnakeLogic {
 
         snake.clear();
         walls.resetWalls();
+        food.resetFood();
 
         snake.add(new Point(gridSize * 23, gridSize * 18));
 
@@ -72,10 +71,10 @@ public class SnakeLogic {
         tickCounter = 0;
 
         for(int wallsCount = 0; wallsCount < random.nextInt(12)+8; wallsCount++){
-            walls.wallGenerator(panelWidth, panelHeight, padding, gridSize);
+            walls.wallGenerator(panelWidth, panelHeight, padding, gridSize, snake.getFirst());
         }
 
-        food.resetFood(panelWidth, panelHeight, padding, snake);
+        food.spawnFood(foodTargetCount, panelWidth, panelHeight, padding, gridSize, snake, walls.getWalls());
     }
 
     public void tick(){
@@ -91,19 +90,38 @@ public class SnakeLogic {
 
         snake.add(0, newHead);
 
-        //food check
-        if(newHead.x == food.getxPos() && newHead.y == food.getyPos()){
-            food.resetFood(panelWidth, panelHeight, padding, snake);
+        Point eatenFood = null;
+        for(Point f : food.getFoodPosition()){
+            if(newHead.equals(f)){
+                eatenFood = f;
+                break;
+            }
+        }
+
+        if(eatenFood != null){
+            food.getFoodPosition().remove(eatenFood);
             SoundManager.playSound("/pop.wav");
             score++;
+
         } else {
             snake.remove(snake.size() - 1);
         }
+
+        food.spawnFood(foodTargetCount, panelWidth, panelHeight, padding, gridSize, snake, walls.getWalls());
 
         //border check
         if(newHead.x < padding || newHead.y < padding || newHead.x >= (panelWidth - padding) || newHead.y >= (panelHeight - padding - 16)) {
             isGameOver = true;
             System.out.println("out of bounds");
+        }
+
+        //walls collision check
+        for (Point wall : walls.getWalls()) {
+            if (newHead.equals(wall)) {
+                isGameOver = true;
+                System.out.println("hit wall");
+                break;
+            }
         }
 
         //eat yourself check

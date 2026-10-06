@@ -18,7 +18,7 @@ public class SnakeWalls {
 
     public void resetWalls(){ walls.clear(); }
 
-    public void wallGenerator(int panelWidth, int panelHeight, int padding, int gridSize) {
+    public void wallGenerator(int panelWidth, int panelHeight, int padding, int gridSize, Point snakeFirstPoint) {
         int wallLength = random.nextInt(12) + 6;
 
         int cols = (panelWidth - 2 * padding) / gridSize;
@@ -26,6 +26,8 @@ public class SnakeWalls {
 
         int maxX = padding + (cols - 1) * gridSize;
         int maxY = padding + (rows - 1) * gridSize;
+
+        int safeRadius = 3 * gridSize;
 
         int startX = padding + random.nextInt(cols) * gridSize;
         int startY = padding + random.nextInt(rows) * gridSize;
@@ -77,6 +79,18 @@ public class SnakeWalls {
             // add wall if its really generated
             if (moved) {
                 walls.add(new Point(newX, newY));
+            }
+        }
+        //remove falls around player
+        for (int i = walls.size() - 1; i >= 0; i--) {
+            Point wall = walls.get(i);
+
+            //.abs remove minus
+            int dx = Math.abs(wall.x - snakeFirstPoint.x);
+            int dy = Math.abs(wall.y - snakeFirstPoint.y);
+
+            if (dx <= safeRadius && dy <= safeRadius) {
+                walls.remove(i);
             }
         }
     }
