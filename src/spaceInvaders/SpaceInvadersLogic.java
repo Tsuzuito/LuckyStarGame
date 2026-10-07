@@ -108,5 +108,9 @@ public class SpaceInvadersLogic {
                 break;
             }
         }
+
+        if(enemies.isEmpty()){
+            isGameOver = true;
+        }
     }
 }

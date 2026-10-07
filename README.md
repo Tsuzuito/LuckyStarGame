@@ -14,7 +14,7 @@ The goal of the project is simply to learn something new and make something fun 
 |Basic Space Invaders implementation|SFX|
 |Score saving and loading system via JSON|memory card (find matching) game|
 |Sounds (Placeholders)|Paddle game (Line in Bounce Rika)|
-|Update Checker|Profile sistem|
+|Update Checker|Profile system|
 ||Settings menu|
 ||(Maybe) Online leaderboard|
 ||idk|

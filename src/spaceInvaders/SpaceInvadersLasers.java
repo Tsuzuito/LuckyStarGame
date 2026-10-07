@@ -83,6 +83,7 @@ public class SpaceInvadersLasers {
     }
 
     public void spawnEnemyLaser(List<Point> enemies){
+        if(enemies.isEmpty()){ return; }
 
         if(random.nextInt(10) == 1){
             enemyLasers.add(new Point(enemies.get(random.nextInt(enemies.size() ) ) ) );

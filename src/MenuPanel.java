@@ -136,6 +136,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     private void openWebPage(String webPageName){
         try{
+
             if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
                 if(webPageName.equalsIgnoreCase("update")){
                     Desktop.getDesktop().browse(new URI("https://github.com/Tsuzuito/LuckyStarGame/releases"));

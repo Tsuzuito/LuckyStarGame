@@ -44,7 +44,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         this.saveManager = saveManager;
         spaceInvadersLogic.reset();
 
-        debugLabel.setBounds(5,545,100,10);
+        debugLabel.setBounds(5,585,100,10);
         add(debugLabel);
 
         scoreLabel.setBounds(400,1,100,10);

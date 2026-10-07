@@ -42,7 +42,7 @@ public class SnakeGamePanel extends JPanel implements ActionListener {
         this.manager = manager;
         this.saveManager = saveManager;
 
-        debugLabel.setBounds(5,545,100,10);
+        debugLabel.setBounds(5,585,100,10);
         add(debugLabel);
 
         //x, y, width, height
