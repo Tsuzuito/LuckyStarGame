@@ -11,7 +11,9 @@ public class MenuPanel extends JPanel implements ActionListener {
     private final PanelManager manager;
     private final Image bgSprite;
 
-    private final JButton button = new JButton("Start Game!");
+    private final JButton startButton = new JButton();
+    private final JButton gitHubButton = new JButton();
+
     private final JLabel versionNumberLabel = new JLabel(UpdateChecker.getVersion());
     private final JButton updateAvailableButton = new JButton("Update available");
 
@@ -27,11 +29,16 @@ public class MenuPanel extends JPanel implements ActionListener {
         bgSprite = new ImageIcon(getClass().getResource("LSGameStartScreen.png")).getImage();
         ImageIcon startButtonSprite = new ImageIcon(getClass().getResource("Untitled-2.png"));
 
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("github-logo.png"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+        ImageIcon githubButtonSprite = new ImageIcon(scaledImage);
+
+
         //---------
-        button.setPreferredSize(new Dimension(200, 60));
-        button.setIcon(startButtonSprite);
-        button.addActionListener(this);
-        button.addMouseListener(new MouseAdapter() {
+        startButton.setPreferredSize(new Dimension(200, 60));
+        startButton.setIcon(startButtonSprite);
+        startButton.addActionListener(this);
+        startButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 System.out.println("mouse entered");
@@ -42,33 +49,48 @@ public class MenuPanel extends JPanel implements ActionListener {
                 System.out.println("mouse exited");
             }
         });
+        //
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.setOpaque(false);
+        centerPanel.add(startButton);
 
-        //---------
+        //----------
+        gitHubButton.setPreferredSize(new Dimension(25, 25));
+        gitHubButton.addActionListener(this);
+        gitHubButton.setIcon(githubButtonSprite);
+
+        gitHubButton.setContentAreaFilled(false);
+        gitHubButton.setBorderPainted(false);
+        gitHubButton.setFocusPainted(false);
+
         updateAvailableButton.setPreferredSize(new Dimension(140, 25));
         updateAvailableButton.setVisible(false);
         updateAvailableButton.addActionListener(this);
 
-        versionNumberLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        //App version panel (left)
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftPanel.setOpaque(false);
+        leftPanel.add(versionNumberLabel);
 
-        //---------
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setOpaque(false);
-        centerPanel.add(button);
+        //update button panel (center)
+        JPanel middlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        middlePanel.setOpaque(false);
+        middlePanel.add(updateAvailableButton);
 
-        //---------
-        JPanel updateButtonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        updateButtonWrapper.setOpaque(false);
+        //GitHub link panel (Right)
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightPanel.setOpaque(false);
+        rightPanel.add(gitHubButton);
 
-        updateButtonWrapper.setPreferredSize(new Dimension(140, 25));
-        updateButtonWrapper.add(updateAvailableButton);
-
-        JPanel southPanel = new JPanel(new BorderLayout());
+        //Combine 3 panel
+        JPanel southPanel = new JPanel(new GridLayout(1, 3));
         southPanel.setOpaque(false);
-        southPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        southPanel.add(versionNumberLabel, BorderLayout.WEST);
-        southPanel.add(updateButtonWrapper, BorderLayout.CENTER);
+        southPanel.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
 
-        //---------
+        southPanel.add(leftPanel);
+        southPanel.add(middlePanel);
+        southPanel.add(rightPanel);
+
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
 
@@ -106,14 +128,20 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == button){ manager.show("gameSelect"); }
-        if(e.getSource() == updateAvailableButton){ openWebPage(); }
+        if(e.getSource() == startButton){ manager.show("gameSelect"); }
+
+        if(e.getSource() == updateAvailableButton){ openWebPage("update"); }
+        if(e.getSource() == gitHubButton) { openWebPage("repo"); }
     }
 
-    private void openWebPage(){
+    private void openWebPage(String webPageName){
         try{
             if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
-                Desktop.getDesktop().browse(new URI("https://github.com/Tsuzuito/LuckyStarGame/releases"));
+                if(webPageName.equalsIgnoreCase("update")){
+                    Desktop.getDesktop().browse(new URI("https://github.com/Tsuzuito/LuckyStarGame/releases"));
+                } else if (webPageName.equalsIgnoreCase("repo")) {
+                    Desktop.getDesktop().browse(new URI("https://github.com/Tsuzuito/LuckyStarGame"));
+                }
             }
         } catch (Exception e){
             System.err.println("Failed to open browser: " + e.getMessage());
