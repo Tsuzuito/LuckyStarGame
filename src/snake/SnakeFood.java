@@ -8,8 +8,8 @@ import java.util.List;
 //🍏
 public class SnakeFood {
 
-    private Random random = new Random();
-    private List<Point> food = new ArrayList<>();
+    private final Random random = new Random();
+    private final List<Point> food = new ArrayList<>();
 
     public SnakeFood(){
 

@@ -14,7 +14,7 @@ public class SpaceInvadersLasers {
     private final int GRID_SIZE = 16;
     private final int SHOOT_COOLDOWN = 3;
     private int timeSinceLastShot = 0;
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public SpaceInvadersLasers(){
 

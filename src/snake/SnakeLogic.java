@@ -9,19 +9,19 @@ import java.util.Random;
 
 public class SnakeLogic {
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
-    private List<Point> snake = new ArrayList<>();
+    private final List<Point> snake = new ArrayList<>();
     private final int gridSize = 16;
     private final int padding = 16 * 4;
 
-    private int panelWidth = 800;
-    private int panelHeight = 600;
+    private final int panelWidth = 800;
+    private final int panelHeight = 600;
 
-    private SnakeFood food;
-    private int foodTargetCount = 2;
+    private final SnakeFood food;
+    private final int foodTargetCount = 2;
 
-    private SnakeWalls walls;
+    private final SnakeWalls walls;
 
     private boolean isGameOver = false;
     public int tickCounter = 0;

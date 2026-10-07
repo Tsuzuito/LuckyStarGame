@@ -28,10 +28,10 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
 
     private final int gridSize = 16;
     private final Image bgSprite;
-    private Timer timer;
+    private final Timer timer;
 
 
-    private JButton backButton = new JButton("Exit");
+    private final JButton backButton = new JButton("Exit");
     private final JLabel scoreLabel = new JLabel();
 
     SpaceInvadersLogic spaceInvadersLogic = new SpaceInvadersLogic();

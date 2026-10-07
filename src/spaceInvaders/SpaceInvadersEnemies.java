@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SpaceInvadersEnemies {
 
-    private List<Point> enemies = new ArrayList<>();
+    private final List<Point> enemies = new ArrayList<>();
 
     public SpaceInvadersEnemies(){
 

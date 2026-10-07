@@ -70,7 +70,7 @@ public class UpdateChecker {
                 System.out.println("Update is available");
                 return true;
             } else if (latestPart < currentPart) {
-                System.out.println("Update is not available(Current version is newer)");
+                System.out.println("Update is not available (Current version is newer)");
                 return false;
 
             }

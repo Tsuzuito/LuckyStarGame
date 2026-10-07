@@ -20,14 +20,14 @@ public class ScorePanel extends JPanel implements ActionListener {
     private final JButton openDataFolder = new JButton("folderdata");
 
     //snake
-    private JList<String> snakeScoreHistory = new JList<>();
-    private JLabel snakeBestLabel = new JLabel("Snake Best: 0");
-    private JScrollPane scrollPaneSnake = new JScrollPane(snakeScoreHistory);
+    private final JList<String> snakeScoreHistory = new JList<>();
+    private final JLabel snakeBestLabel = new JLabel("Snake Best: 0");
+    private final JScrollPane scrollPaneSnake = new JScrollPane(snakeScoreHistory);
 
     //space invaders
-    private JList<String> spaceInvadersScoreHistory = new JList<>();
+    private final JList<String> spaceInvadersScoreHistory = new JList<>();
     private final JLabel spaceBestLabel = new JLabel("Space Invaders Best: 0");
-    private JScrollPane scrollPaneSpace = new JScrollPane(spaceInvadersScoreHistory);
+    private final JScrollPane scrollPaneSpace = new JScrollPane(spaceInvadersScoreHistory);
 
     //
 
@@ -150,6 +150,5 @@ public class ScorePanel extends JPanel implements ActionListener {
                 ex.printStackTrace();
             }
         }
-
     }
 }

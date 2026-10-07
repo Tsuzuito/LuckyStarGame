@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class SnakeGamePanel extends JPanel implements ActionListener {
 
     private final PanelManager manager;
-    private Timer timer;
+    private final Timer timer;
     private final int gridSize = 16;
     private final Image bgSprite;
 
