@@ -13,6 +13,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     private final JButton startButton = new JButton();
     private final JButton gitHubButton = new JButton();
+    private final JButton settingsButton = new JButton();
 
     private final JLabel versionNumberLabel = new JLabel(UpdateChecker.getVersion());
     private final JButton updateAvailableButton = new JButton("Update available");
@@ -63,9 +64,20 @@ public class MenuPanel extends JPanel implements ActionListener {
         gitHubButton.setBorderPainted(false);
         gitHubButton.setFocusPainted(false);
 
+        //----------
         updateAvailableButton.setPreferredSize(new Dimension(140, 25));
         updateAvailableButton.setVisible(false);
         updateAvailableButton.addActionListener(this);
+
+        //----------
+        settingsButton.setPreferredSize(new Dimension(25,25));
+        settingsButton.addActionListener(this);
+
+
+        //Settings panel (right)
+        JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topRightPanel.setOpaque(false);
+        topRightPanel.add(settingsButton);
 
         //App version panel (left)
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -93,6 +105,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
+//        add(topRightPanel, BorderLayout.NORTH);
 
         checkUpdatesAsync();
     }
@@ -129,6 +142,10 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startButton){ manager.show("gameSelect"); }
+        if(e.getSource() == settingsButton) {
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(settingsButton);
+            frame.getGlassPane().setVisible(true);
+        }
 
         if(e.getSource() == updateAvailableButton){ openWebPage("update"); }
         if(e.getSource() == gitHubButton) { openWebPage("repo"); }
