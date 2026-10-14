@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 
 public class SettingsOverlay extends JPanel {
 
-    private final Image ishigiru;
+    private Image ishigiru;
 
     public SettingsOverlay(){
         setOpaque(false);
@@ -14,45 +14,49 @@ public class SettingsOverlay extends JPanel {
 
         addMouseListener(new MouseAdapter() {});
 
+        ishigiru = new ImageIcon(getClass().getResource("Screenshot 2026-10-09 175957.png")).getImage();
+
+        //main window
         JPanel settingsDialog = new JPanel();
-        settingsDialog.setPreferredSize(new Dimension(400,400));
-        settingsDialog.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        settingsDialog.add(new JLabel("settings menu"));
+        settingsDialog.setPreferredSize(new Dimension(500,300));
+        settingsDialog.setLayout(new BorderLayout());
 
-        JButton closeSettings = new JButton("close");
-
-        closeSettings.addActionListener(new ActionListener() {
+        //Close button
+        JButton closeButton = new JButton("X");
+        closeButton.setPreferredSize(new Dimension(25,25));
+        closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
             }
         });
 
-        settingsDialog.add(closeSettings);
+        //settings label
+        JLabel settingsLabel = new JLabel("Settings");
+        settingsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        topPanel.add(settingsLabel, BorderLayout.CENTER);
+        topPanel.add(closeButton, BorderLayout.EAST);
+
+        settingsDialog.add(topPanel, BorderLayout.NORTH);
 
         add(settingsDialog);
-
-        ishigiru = new ImageIcon(getClass().getResource("Screenshot 2026-10-09 175957.png")).getImage();
-
-
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        //RGBA
         g.setColor(new Color(0, 0, 0, 150));
         g.fillRect(0, 0, getWidth(), getHeight());
-    }
 
-    @Override
-    protected void paintChildren(Graphics g) {
-        super.paintChildren(g);
-
-
-        if (ishigiru != null) {
-            g.drawImage(ishigiru, 170, 500, null);
+        if(ishigiru != null){
+            int x = (getWidth() - ishigiru.getWidth(this)) / 2;
+            g.drawImage(ishigiru, x, getHeight()-120, null);
         }
     }
 }
