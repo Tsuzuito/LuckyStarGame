@@ -23,7 +23,8 @@ public class LuckyStarGame {
         //We need a JComponent because if we set the window size using frame.setSize
         //it will be the size of the ENTIRE window including the system borders rather than just the game area
 
-        SettingsOverlay settingsOverlayPane = new SettingsOverlay();
+        final SettingsManager settingsManager = new SettingsManager();
+        SettingsOverlay settingsOverlayPane = new SettingsOverlay(settingsManager);
         frame.setGlassPane(settingsOverlayPane);
     }
 }

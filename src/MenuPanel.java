@@ -8,7 +8,7 @@ import java.net.URI;
 
 public class MenuPanel extends JPanel implements ActionListener {
 
-    private final PanelManager manager;
+    private final PanelManager panelManager;
     private final Image bgSprite;
 
     private final JButton startButton = new JButton();
@@ -18,8 +18,8 @@ public class MenuPanel extends JPanel implements ActionListener {
     private final JLabel versionNumberLabel = new JLabel(UpdateChecker.getVersion());
     private final JButton updateAvailableButton = new JButton("Update available");
 
-    public MenuPanel(PanelManager manager){
-        this.manager = manager;
+    public MenuPanel(PanelManager panelManager){
+        this.panelManager = panelManager;
 
         setBackground(Color.black);
         setLayout(new BorderLayout());
@@ -105,7 +105,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
-//        add(topRightPanel, BorderLayout.NORTH);
+        add(topRightPanel, BorderLayout.NORTH);
 
         checkUpdatesAsync();
     }
@@ -141,7 +141,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == startButton){ manager.show("gameSelect"); }
+        if(e.getSource() == startButton){ panelManager.show("gameSelect"); }
         if(e.getSource() == settingsButton) {
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(settingsButton);
             frame.getGlassPane().setVisible(true);
