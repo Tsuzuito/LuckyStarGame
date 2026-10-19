@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
 
@@ -20,7 +21,11 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
 
     private final ImageIcon shipSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
     private final ImageIcon laserSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
-    private final ImageIcon enemySprite = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
+    private final ImageIcon enemySpriteType0 = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
+    private final ImageIcon enemySpriteType1 = tintImage(
+            new ImageIcon(getClass().getResource("testicon16x16_3.png")),
+            Color.BLUE
+    );
 
     private final PanelManager manager;
 
@@ -154,38 +159,68 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
         });
     }
 
+    private ImageIcon tintImage(ImageIcon icon, Color color){
+        int w = icon.getIconWidth();
+        int h = icon.getIconHeight();
+        BufferedImage tintedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = tintedImage.createGraphics();
+
+        icon.paintIcon(null, g2, 0, 0);
+
+        g2.setComposite(AlphaComposite.SrcAtop);
+        g2.setColor(color);
+        g2.fillRect(0, 0, w, h);
+        g2.dispose();
+
+        return new ImageIcon(tintedImage);
+    }
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
+        Graphics2D g2d = (Graphics2D) g;
+
         g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
 
+        //shipSprite rendering
         if (shipSprite != null) {
-            shipSprite.paintIcon(this, g, spaceInvadersLogic.getPlayerXpos(), spaceInvadersLogic.getPlayerYpos());
+            shipSprite.paintIcon(this, g2d, spaceInvadersLogic.getPlayerXpos(), spaceInvadersLogic.getPlayerYpos());
 
         }
 
+        //laserSprite rendering
         if(laserSprite != null){
             for(Point p : spaceInvadersLogic.getLasers()){
-                laserSprite.paintIcon(this, g, p.x, p.y);
+                laserSprite.paintIcon(this, g2d, p.x, p.y);
             }
         }
 
-        if(enemySprite != null){
-            for(Point p : spaceInvadersLogic.getEnemies()){
-                enemySprite.paintIcon(this, g, p.x, p.y);
+        //enemiesType0 rendering
+        if(enemySpriteType0 != null){
+            for(Point p : spaceInvadersLogic.getEnemiesType0()){
+                enemySpriteType0.paintIcon(this, g2d, p.x, p.y);
             }
         }
 
-        if(enemySprite != null){
+        // enemiesType1 rendering
+        if(enemySpriteType1 != null){
+            for(Point p : spaceInvadersLogic.getEnemiesType1()){
+                enemySpriteType1.paintIcon(this, g2d, p.x, p.y);
+            }
+        }
+
+        //walls rendering
+        if(enemySpriteType0 != null){
             for(Point p : spaceInvadersLogic.getWalls()){
-                enemySprite.paintIcon(this, g, p.x, p.y);
+                enemySpriteType0.paintIcon(this, g2d, p.x, p.y);
             }
         }
 
+        //enemyesLasers rendering
         if(laserSprite != null){
             for(Point p : spaceInvadersLogic.getEnemyLasers()){
-                laserSprite.paintIcon(this, g, p.x, p.y);
+                laserSprite.paintIcon(this, g2d, p.x, p.y);
             }
         }
     }

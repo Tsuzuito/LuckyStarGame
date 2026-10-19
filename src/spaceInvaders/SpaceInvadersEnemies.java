@@ -6,18 +6,23 @@ import java.util.List;
 
 public class SpaceInvadersEnemies {
 
-    private final List<Point> enemies = new ArrayList<>();
+    private final List<Point> enemiesType0 = new ArrayList<>();
+    private final List<Point> enemiesType1 = new ArrayList<>();
 
     public SpaceInvadersEnemies(){
 
     }
 
-    public List<Point> getEnemies(){ return enemies; }
+    public List<Point> getEnemiesType0(){ return enemiesType0; }
+    public List<Point> getEnemiesType1(){ return enemiesType1; }
 
     public void moveEnemiesRight(){
         int moveSpeedRight = 16;
 
-        for(Point enemy : enemies){
+        for(Point enemy : enemiesType0){
+            enemy.x += moveSpeedRight;
+        }
+        for(Point enemy : enemiesType1){
             enemy.x += moveSpeedRight;
         }
     }
@@ -25,27 +30,42 @@ public class SpaceInvadersEnemies {
     public void moveEnemiesLeft(){
         int moveSpeedRight = -16;
 
-        for(Point enemy : enemies){
+        for(Point enemy : enemiesType0){
+            enemy.x += moveSpeedRight;
+        }
+        for(Point enemy : enemiesType1){
             enemy.x += moveSpeedRight;
         }
     }
 
-    public void enemySpawner(int x, int y, int spacing, int count){
+    public void enemySpawner(int x, int y, int spacing, int count, byte type){
         int startX = 16 * x;
         int startY = 16 * y;
         int step = 16*spacing;
 
-        for (int i = 0; i < count; i++) {
-            enemies.add(new Point(startX + (i * step), startY));
+        switch (type){
+            case (0):{
+                for (int i = 0; i < count; i++) {
+                    enemiesType0.add(new Point(startX + (i * step), startY));
+                }
+                break;
+            }
+            case (1):{
+                for (int i = 0; i < count; i++) {
+                    enemiesType1.add(new Point(startX + (i * step), startY));
+                }
+                break;
+            }
         }
     }
 
-    public void killEnemy(int a){ enemies.remove(a); }
-    public void killAllEnemies(){ enemies.clear(); }
+    public void killEnemyInType0(int a){ enemiesType0.remove(a); }
+    public void killEnemyInType1(int a){ enemiesType1.remove(a); }
+    public void killAllEnemies(){ enemiesType0.clear(); enemiesType1.clear(); }
 
     public void spawnEnemies(){
-        //x,y,spacing,count
-        enemySpawner(7,7,2,10);
-        enemySpawner(7,9,2,10);
+        //x,y,spacing,count,type
+        enemySpawner(7,7,2,10,(byte)0);
+        enemySpawner(7,9,2,10,(byte)1);
     }
 }

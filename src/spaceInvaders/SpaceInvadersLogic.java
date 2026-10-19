@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static sound.SoundManager.playSound;
+
 public class SpaceInvadersLogic {
 
     private final int GRID_SIZE = 16;
@@ -13,7 +15,8 @@ public class SpaceInvadersLogic {
     private int playerXpos = 16*23;
     private final int playerYpos = 16*25;
 
-    private final List<Point> enemies;
+    private final List<Point> enemiesType0;
+    private final List<Point> enemiesType1;
     private boolean isGameOver = false;
     private boolean isEnemiesMovingReverse = false;
 
@@ -30,13 +33,16 @@ public class SpaceInvadersLogic {
     public int tickCounter = 0;
 
     public SpaceInvadersLogic(){
-        this.enemies = enemyManager.getEnemies();
+        this.enemiesType0 = enemyManager.getEnemiesType0();
+        this.enemiesType1 = enemyManager.getEnemiesType1();
     }
 
     public int getPlayerXpos(){ return playerXpos; }
     public int getPlayerYpos(){ return playerYpos; }
 
-    public List<Point> getEnemies(){ return new ArrayList<>(enemies); }
+    public List<Point> getEnemiesType0(){ return new ArrayList<>(enemiesType0); }
+    public List<Point> getEnemiesType1(){ return new ArrayList<>(enemiesType1); }
+
     public List<Point> getEnemyLasers(){ return laserManager.getEnemyLasers(); }
     public List<Point> getLasers(){ return laserManager.getLasers(); }
     public List<Point> getWalls(){ return wallManager.getWalls(); }
@@ -78,11 +84,21 @@ public class SpaceInvadersLogic {
 
         wallManager.checkWallCollisions(laserManager);
 
-        for(int i = 0; i < enemyManager.getEnemies().size(); i++){
-            if(enemies.get(i).x >= BOARD_WIDTH - GRID_SIZE){
+        for(int i = 0; i < enemyManager.getEnemiesType0().size(); i++){
+            if(enemiesType0.get(i).x >= BOARD_WIDTH - GRID_SIZE){
                 isEnemiesMovingReverse = true;
                 break;
-            } else if (enemies.get(i).x <= 0) {
+            } else if (enemiesType0.get(i).x <= 0) {
+                isEnemiesMovingReverse = false;
+                break;
+            }
+        }
+
+        for(int i = 0; i < enemyManager.getEnemiesType1().size(); i++){
+            if(enemiesType1.get(i).x >= BOARD_WIDTH - GRID_SIZE){
+                isEnemiesMovingReverse = true;
+                break;
+            } else if (enemiesType1.get(i).x <= 0) {
                 isEnemiesMovingReverse = false;
                 break;
             }
@@ -94,12 +110,14 @@ public class SpaceInvadersLogic {
             } else {
                 enemyManager.moveEnemiesRight();
             }
+            playSound("/pop.wav");
             moveWaitTime = 0;
         }
         int destroyed = laserManager.checkEnemyCollisions(enemyManager);
         score += destroyed;
 
-        laserManager.spawnEnemyLaser(enemyManager.getEnemies());
+        laserManager.spawnEnemyLaser(enemyManager.getEnemiesType0());
+        laserManager.spawnEnemyLaser(enemyManager.getEnemiesType1());
 
         Point playerPosTemp = new Point(playerXpos, playerYpos);
         for(Point enemyLasers : laserManager.getEnemyLasers()){
@@ -109,7 +127,7 @@ public class SpaceInvadersLogic {
             }
         }
 
-        if(enemies.isEmpty()){
+        if(enemiesType0.isEmpty() && enemiesType1.isEmpty()){
             isGameOver = true;
         }
     }

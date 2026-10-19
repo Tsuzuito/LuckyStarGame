@@ -76,7 +76,6 @@ public class SettingsOverlay extends JPanel {
             if (!source.getValueIsAdjusting()) {
                 int value = source.getValue();
                 settingsManager.setVolumeValue(value);
-                System.out.println(value);
             }
         });
 

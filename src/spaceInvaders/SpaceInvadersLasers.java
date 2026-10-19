@@ -58,7 +58,8 @@ public class SpaceInvadersLasers {
 
     public int checkEnemyCollisions(SpaceInvadersEnemies enemyManager){
         int destroyedCount = 0;
-        List<Point> enemies = enemyManager.getEnemies();
+        List<Point> enemiesType0 = enemyManager.getEnemiesType0();
+        List<Point> enemiesType1 = enemyManager.getEnemiesType1();
 
         //enemies collision check
         //Creates iterator object for laser list. Allow remove elements while loop
@@ -67,11 +68,22 @@ public class SpaceInvadersLasers {
             //use next laser (shift to right)
             Point laser = laserIterator.next();
 
-            for(int i = 0; i < enemies.size(); i++){
-                Point enemy = enemies.get(i);
+            for(int i = 0; i < enemiesType0.size(); i++){
+                Point enemy = enemiesType0.get(i);
 
                 if(laser.equals(enemy)){
-                    enemyManager.killEnemy(i);
+                    enemyManager.killEnemyInType0(i);
+                    laserIterator.remove();
+                    destroyedCount++;
+                    break;
+                }
+            }
+
+            for(int i = 0; i < enemiesType1.size(); i++){
+                Point enemy = enemiesType1.get(i);
+
+                if(laser.equals(enemy)){
+                    enemyManager.killEnemyInType1(i);
                     laserIterator.remove();
                     destroyedCount++;
                     break;
