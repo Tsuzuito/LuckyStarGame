@@ -57,10 +57,12 @@ public class SpaceInvadersWalls {
 
         for(int row = 0; row < 2; row++){
             for(int colums = 0; colums < 3; colums++){
+
                 wallHealthMap.put(new Point(16*(5+colums), 16*(21+row)), 4);
                 wallHealthMap.put(new Point(16*(15+colums), 16*(21+row)), 4);
+                wallHealthMap.put(new Point(16*(25+colums), 16*(21+row)), 4);
+                wallHealthMap.put(new Point(16*(35+colums), 16*(21+row)), 4);
             }
         }
-
     }
 }

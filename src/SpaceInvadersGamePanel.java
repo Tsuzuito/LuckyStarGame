@@ -22,10 +22,7 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     private final ImageIcon shipSprite = new ImageIcon(getClass().getResource("testicon16x16.png"));
     private final ImageIcon laserSprite = new ImageIcon(getClass().getResource("testicon16x16_2.png"));
     private final ImageIcon enemySpriteType0 = new ImageIcon(getClass().getResource("testicon16x16_3.png"));
-    private final ImageIcon enemySpriteType1 = tintImage(
-            new ImageIcon(getClass().getResource("testicon16x16_3.png")),
-            Color.BLUE
-    );
+    private final ImageIcon enemySpriteType1 = tintImage(new ImageIcon(getClass().getResource("testicon16x16_3.png")), Color.PINK );
 
     private final PanelManager manager;
 
@@ -160,16 +157,21 @@ public class SpaceInvadersGamePanel extends JPanel implements ActionListener {
     }
 
     private ImageIcon tintImage(ImageIcon icon, Color color){
-        int w = icon.getIconWidth();
-        int h = icon.getIconHeight();
-        BufferedImage tintedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        int weight = icon.getIconWidth();
+        int height = icon.getIconHeight();
+
+        BufferedImage tintedImage = new BufferedImage(weight, height, BufferedImage.TYPE_INT_ARGB);
+
         Graphics2D g2 = tintedImage.createGraphics();
 
         icon.paintIcon(null, g2, 0, 0);
 
+        //doesn't fill fully transparent pixels on sprite
         g2.setComposite(AlphaComposite.SrcAtop);
         g2.setColor(color);
-        g2.fillRect(0, 0, w, h);
+
+        g2.fillRect(0, 0, weight, height);
+        //сcleanup
         g2.dispose();
 
         return new ImageIcon(tintedImage);

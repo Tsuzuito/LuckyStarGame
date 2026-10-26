@@ -69,6 +69,7 @@ public class SpaceInvadersLogic {
 
         playerXpos = 16*23;
         enemyManager.spawnEnemies();
+        isEnemiesMovingReverse = false;
         isGameOver = false;
     }
 
@@ -107,8 +108,20 @@ public class SpaceInvadersLogic {
         if (moveWaitTime >= 10) {
             if (isEnemiesMovingReverse) {
                 enemyManager.moveEnemiesLeft();
+                for(int i = 0; i < enemyManager.getEnemiesType1().size(); i++){
+                    if(enemiesType1.get(i).x <= 0 || enemiesType1.get(i).x >= BOARD_WIDTH - GRID_SIZE){
+                        enemyManager.moveEnemiesDown();
+                        break;
+                    }
+                }
             } else {
                 enemyManager.moveEnemiesRight();
+                for(int i = 0; i < enemyManager.getEnemiesType1().size(); i++){
+                    if(enemiesType1.get(i).x <= 0 || enemiesType1.get(i).x >= BOARD_WIDTH - GRID_SIZE){
+                        enemyManager.moveEnemiesDown();
+                        break;
+                    }
+                }
             }
             playSound("/pop.wav");
             moveWaitTime = 0;

@@ -38,6 +38,18 @@ public class SpaceInvadersEnemies {
         }
     }
 
+    public void moveEnemiesDown(){
+        int moveDown = 16;
+
+        for(Point enemy : enemiesType0){
+            enemy.y += moveDown;
+        }
+        for(Point enemy : enemiesType1){
+            enemy.y += moveDown;
+        }
+
+    }
+
     public void enemySpawner(int x, int y, int spacing, int count, byte type){
         int startX = 16 * x;
         int startY = 16 * y;
@@ -67,5 +79,7 @@ public class SpaceInvadersEnemies {
         //x,y,spacing,count,type
         enemySpawner(7,7,2,10,(byte)0);
         enemySpawner(7,9,2,10,(byte)1);
+        enemySpawner(7,11,2,10,(byte)1);
+        enemySpawner(7,13,2,10,(byte)0);
     }
 }
