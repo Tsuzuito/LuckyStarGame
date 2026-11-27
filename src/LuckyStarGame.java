@@ -20,6 +20,16 @@ public class LuckyStarGame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        Point screenPos = new Point(frame.getLocation());
+        System.out.println("Window default pos: \nX: " + screenPos.x + "\nY: " + screenPos.y);
+
+        ScreenShake shake = new ScreenShake();
+        frame.add(shake);
+
+        frame.setLocation(screenPos);
+
+        shake.setScreenCurrentLocation(screenPos);
+
         //We need a JComponent because if we set the window size using frame.setSize
         //it will be the size of the ENTIRE window including the system borders rather than just the game area
 
